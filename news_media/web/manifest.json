@@ -1,6 +1,6 @@
 {
-    "name": "social_media_dashboards",
-    "short_name": "social_media_dashboards",
+    "name": "NewsToYou",
+    "short_name": "NewsToYou",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

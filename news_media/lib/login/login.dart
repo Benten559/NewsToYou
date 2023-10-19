@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_dashboards/customized/commonbtn.dart';
+import 'package:NewsToYou/customized/commonbtn.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);

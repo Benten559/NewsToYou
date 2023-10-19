@@ -1,4 +1,4 @@
-# social_media_dashboards
+# NewsToYou
 
 A new Flutter project.
 

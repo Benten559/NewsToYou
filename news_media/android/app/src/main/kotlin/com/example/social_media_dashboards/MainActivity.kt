@@ -1,4 +1,4 @@
-package com.example.social_media_dashboards
+package com.example.NewsToYou
 
 import io.flutter.embedding.android.FlutterActivity
 
