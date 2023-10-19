@@ -14,6 +14,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
 
       //First page pop up
+      title:"NewsToYou",
       home: SplashPage(),
 
       //Close debug tag
