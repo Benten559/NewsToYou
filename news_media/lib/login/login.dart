@@ -1,5 +1,6 @@
 import 'package:NewsToYou/customized/app_colors.dart';
 import 'package:NewsToYou/customized/ourlogo.dart';
+import 'package:NewsToYou/news_feed/news_feed.dart';
 import 'package:NewsToYou/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:NewsToYou/customized/commonbtn.dart';
@@ -12,7 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool obscureText=true;
+  bool obscureText = true;
 
   Widget _buildView(BuildContext context) {
     return SafeArea(
@@ -47,7 +48,6 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
 
-
             const SizedBox(height: 10),
 
             // Password
@@ -68,7 +68,8 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: obscureText,
                 decoration: InputDecoration(
                   suffix: IconButton(
-                    icon: Icon(obscureText ? Icons.visibility : Icons.visibility_off),
+                    icon: Icon(
+                        obscureText ? Icons.visibility : Icons.visibility_off),
                     onPressed: () {
                       setState(() {
                         obscureText = !obscureText;
@@ -88,7 +89,10 @@ class _LoginPageState extends State<LoginPage> {
 
             CommonBtn(
               text: 'Login',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => NewsFeedPage()));
+              },
               height: 60,
               width: double.infinity,
               radius: 6,
@@ -112,7 +116,10 @@ class _LoginPageState extends State<LoginPage> {
 
                 TextButton(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>const SignUpPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignUpPage()));
                   },
                   child: const Text(
                     "Sign Up",
@@ -168,7 +175,6 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 0,
         title: const Column(
           children: [
-
             OurLogo(),
 
             SizedBox(height: 5),
