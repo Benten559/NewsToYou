@@ -1,8 +1,10 @@
 import 'package:NewsToYou/customized/app_colors.dart';
 import 'package:NewsToYou/customized/ourlogo.dart';
 import 'package:NewsToYou/login/login.dart';
+import 'package:NewsToYou/news_feed/news_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:NewsToYou/customized/commonbtn.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -12,6 +14,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final auth = FirebaseAuth.instance;
+
   TextEditingController usernamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController cpasswordcontroller = TextEditingController();
@@ -51,26 +55,50 @@ class _SignUpPageState extends State<SignUpPage> {
                 controlsBuilder: (context, ControlsDetails details) {
                   return Column(
                     children: [
-                      const SizedBox(height: 46),
-                      CommonBtn(
-                        text: _currentStep < 2 ? 'Next' : 'Register',
+                      const SizedBox(height: 30),
+                      if(_currentStep == 0)
+                        CommonBtn(
+                          text: 'Next',
+                          ///this super long if statement indicates if all the requirements satisfied, then you can press register and go back to login page to login
+                          onPressed: _currentStep<2?
+                          (_usercheck&&_passwordcheck&&_cpasswordmatch? details.onStepContinue :
+                          null):() {
+                            ;},
+                          height: 60,
+                          width: double.infinity,
+                          radius: 6,
+                        ),
 
-                        ///this super long if statement indicates if all the requirements satisfied, then you can press register and go back to login page to login
-                        onPressed: _currentStep < 2
-                            ? (_usercheck && _passwordcheck && _cpasswordmatch
-                                ? details.onStepContinue
-                                : null)
-                            : () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const LoginPage()));
-                              },
+                      const SizedBox(height: 15),
+
+                      if(_currentStep == 1 )
+                      CommonBtn(
+                        text: 'Next',
+                        onPressed: details.onStepContinue,
                         height: 60,
                         width: double.infinity,
                         radius: 6,
                       ),
+                      const SizedBox(height: 10),
+
+                      if (_currentStep == 2)
+                        CommonBtn(
+                          text: 'Register',
+                          onPressed: () {
+                            FirebaseAuth.instance
+                                .createUserWithEmailAndPassword(
+                                email: usernamecontroller.text,
+                                password: passwordcontroller.text)
+                                .then((value) {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) => LoginPage()));
+                            });
+                          },
+                          height: 60,
+                          width: double.infinity,
+                          radius: 6,
+                        ),
+
                       const SizedBox(height: 16),
                       if (_currentStep != 0)
                         CommonBtn(
@@ -80,6 +108,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           width: double.infinity,
                           radius: 6,
                         ),
+
+
                     ],
                   );
                 },
@@ -143,7 +173,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                     ? (_usercheck ? Colors.green : Colors.red)
                                     : null,
                               ),
-                              hintText: "Username",
                               border: InputBorder.none,
                             ),
                           ),
@@ -221,7 +250,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                         : Colors.red)
                                     : null,
                               ),
-                              hintText: "Password",
                               border: InputBorder.none,
                             ),
                           ),
@@ -300,7 +328,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                         : Colors.red)
                                     : null,
                               ),
-                              hintText: "Confirm Password",
                               border: InputBorder.none,
                             ),
                           ),
