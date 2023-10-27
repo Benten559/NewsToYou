@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:636953773414:android:faf7a0a1f6dd479f7534a7",
+        "mobilesdk_app_id": "1:636953773414:android:701863b53a8f8c437534a7",
         "android_client_info": {
-          "package_name": "com.news_media"
+          "package_name": "com.example.NewsToYou"
         }
       },
       "oauth_client": [],
