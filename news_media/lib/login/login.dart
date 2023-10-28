@@ -4,6 +4,7 @@ import 'package:NewsToYou/news_feed/news_feed.dart';
 import 'package:NewsToYou/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:NewsToYou/customized/commonbtn.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,6 +14,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  late String  _email, _password;
+  final auth = FirebaseAuth.instance;
   bool obscureText = true;
 
   Widget _buildView(BuildContext context) {
@@ -39,12 +42,16 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ],
               ),
-              child: const TextField(
+              child: TextField(
                 decoration: InputDecoration(
-                  labelText: "Username",
-                  hintText: "Username",
+                  hintText: "Email",
                   border: InputBorder.none,
                 ),
+                onChanged: (value){
+                  setState(() {
+                    _email = value.trim();
+                  });
+                },
               ),
             ),
 
@@ -76,22 +83,26 @@ class _LoginPageState extends State<LoginPage> {
                       });
                     },
                   ),
-                  labelText: "Password",
                   hintText: "Password",
                   border: InputBorder.none,
                 ),
+                  onChanged: (value){
+                    setState(() {
+                      _password = value.trim();
+                    });
+                  },
               ),
             ),
 
             const SizedBox(height: 30),
 
-            const SizedBox(height: 16),
 
             CommonBtn(
               text: 'Login',
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => NewsFeedPage()));
+                auth.signInWithEmailAndPassword(email: _email, password: _password).then((_){
+                Navigator.push(context,MaterialPageRoute(builder: (context) => NewsFeedPage()));
+                });
               },
               height: 60,
               width: double.infinity,

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "636953773414",
+    "project_id": "newstoyou-445f9",
+    "storage_bucket": "newstoyou-445f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:636953773414:android:701863b53a8f8c437534a7",
+        "android_client_info": {
+          "package_name": "com.example.NewsToYou"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_npqzei-EIYAOkxlyWJQX_urW7nKEqBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
