@@ -19,9 +19,10 @@ class _NewsFeedPage extends State<NewsFeedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           toolbarHeight: 105,
           centerTitle: true,
-          backgroundColor: Colors.transparent,
+          //backgroundColor: Colors.transparent,
           elevation: 0,
           title: const Column(
             children: [
