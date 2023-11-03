@@ -25,6 +25,7 @@ class _ProfilePage extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           toolbarHeight: 105,
           centerTitle: true,
           backgroundColor: Colors.blueGrey,
