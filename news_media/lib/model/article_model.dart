@@ -12,17 +12,17 @@ class Article {
   String? author = "0";
   String? title = "0";
   String? description = "0";
-  String? url = "0";
+  String url = "0";
   String? urlToImage = "0";
   String? publishedAt = "0";
   String? content = "0";
-
+ 
   Article(
       {this.source,
       this.author,
       this.title,
       this.description,
-      this.url,
+      required this.url,
       this.urlToImage,
       this.publishedAt,
       this.content});
