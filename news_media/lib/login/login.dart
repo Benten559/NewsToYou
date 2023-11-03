@@ -1,6 +1,7 @@
 import 'package:NewsToYou/customized/app_colors.dart';
 import 'package:NewsToYou/customized/ourlogo.dart';
 import 'package:NewsToYou/globals/user_session.dart';
+import 'package:NewsToYou/navigationmenu/navigationmenu.dart';
 import 'package:NewsToYou/news_feed/news_feed.dart';
 import 'package:NewsToYou/signup/signup.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                         email: _email, password: _password)
                     .then((_) {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => NewsFeedPage()));
+                      MaterialPageRoute(builder: (context) => const NavigationMenu()));
                 });
               },
               height: 60,
