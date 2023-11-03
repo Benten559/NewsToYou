@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return  const MaterialApp(
       //First page pop up
       title: "NewsToYou",
       home: SplashPage(),
