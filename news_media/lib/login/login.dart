@@ -1,5 +1,6 @@
 import 'package:NewsToYou/customized/app_colors.dart';
 import 'package:NewsToYou/customized/ourlogo.dart';
+import 'package:NewsToYou/globals/user_session.dart';
 import 'package:NewsToYou/news_feed/news_feed.dart';
 import 'package:NewsToYou/signup/signup.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  late String  _email, _password;
+  late String _email, _password;
   final auth = FirebaseAuth.instance;
   bool obscureText = true;
 
@@ -47,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: "Email",
                   border: InputBorder.none,
                 ),
-                onChanged: (value){
+                onChanged: (value) {
                   setState(() {
                     _email = value.trim();
                   });
@@ -86,22 +87,27 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: "Password",
                   border: InputBorder.none,
                 ),
-                  onChanged: (value){
-                    setState(() {
-                      _password = value.trim();
-                    });
-                  },
+                onChanged: (value) {
+                  setState(() {
+                    _password = value.trim();
+                  });
+                },
               ),
             ),
 
             const SizedBox(height: 30),
 
-
             CommonBtn(
               text: 'Login',
               onPressed: () {
-                auth.signInWithEmailAndPassword(email: _email, password: _password).then((_){
-                Navigator.push(context,MaterialPageRoute(builder: (context) => NewsFeedPage()));
+                var s = Singleton();
+                s.userName = _email;
+                auth
+                    .signInWithEmailAndPassword(
+                        email: _email, password: _password)
+                    .then((_) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => NewsFeedPage()));
                 });
               },
               height: 60,
