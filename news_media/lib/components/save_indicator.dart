@@ -1,5 +1,6 @@
 import 'package:NewsToYou/globals/user_session.dart';
 import 'package:NewsToYou/model/article_model.dart';
+import 'package:NewsToYou/services/save_article.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -14,6 +15,7 @@ class SaveButton extends StatefulWidget {
 
 class _SaveButton extends State<SaveButton> {
   bool _savePressed = false;
+  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +26,10 @@ class _SaveButton extends State<SaveButton> {
           onPressed: () => {
                 setState(() {
                   var s = Singleton();
+                  // ignore: avoid_print
                   print(s.userName);
+                  print("CLICKED SAVE");
+                  saveArticleToUser(widget.article); //Save an individual article in firestore, for a user
                   _savePressed = !_savePressed;
                 })
               },
