@@ -29,7 +29,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
             label: 'News',
           ),
           NavigationDestination(
-            selectedIcon: Icon(Icons.trending_down),
+            selectedIcon: Icon(Icons.trending_up),
             icon: Icon(Icons.trending_down_outlined),
             label: 'Trending',
           ),
