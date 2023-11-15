@@ -72,10 +72,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyDmdKdI-HUp48nRJ2CCIR6HkmLvpmWcLcY',
-    appId: '1:636953773414:ios:3f68b3918e909d127534a7',
+    appId: '1:636953773414:ios:fd39e98919b74a757534a7',
     messagingSenderId: '636953773414',
     projectId: 'newstoyou-445f9',
     storageBucket: 'newstoyou-445f9.appspot.com',
-    iosBundleId: 'com.example.NewsToYou',
+    iosBundleId: 'com.example.socialMediaDashboards.RunnerTests',
   );
 }

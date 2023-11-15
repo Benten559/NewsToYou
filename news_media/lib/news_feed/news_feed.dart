@@ -3,7 +3,6 @@ import 'package:NewsToYou/model/article_model.dart';
 import 'package:NewsToYou/services/api_service.dart';
 import 'package:NewsToYou/components/customListTile.dart';
 import 'package:flutter/material.dart';
-// import 'package:NewsToYou/customized/commonbtn.dart';
 
 class NewsFeedPage extends StatefulWidget {
   NewsFeedPage({Key? key}) : super(key: key);
@@ -46,7 +45,6 @@ class _NewsFeedPage extends State<NewsFeedPage> {
           builder:
               (BuildContext context, AsyncSnapshot<List<Article>?> snapshot) {
             if (snapshot.hasData) {
-              // if (snapshot.error!){
               List<Article>? articles = snapshot.data;
               return ListView.builder(
                   itemCount: articles?.length,
@@ -58,10 +56,6 @@ class _NewsFeedPage extends State<NewsFeedPage> {
               child: CircularProgressIndicator(),
             );
           },
-        )
-        // SingleChildScrollView(
-        //   child: _buildView(context),
-        // ),
-        );
+        ));
   }
 }
