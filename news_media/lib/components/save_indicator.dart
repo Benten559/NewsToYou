@@ -1,4 +1,3 @@
-import 'package:NewsToYou/globals/user_session.dart';
 import 'package:NewsToYou/model/article_model.dart';
 import 'package:NewsToYou/services/save_article.dart';
 import 'package:flutter/material.dart';
@@ -7,15 +6,13 @@ import 'package:flutter/material.dart';
 class SaveButton extends StatefulWidget {
   Article article;
 
-  // const SaveButton({super.key});
   SaveButton(this.article, {super.key});
+
   @override
   _SaveButton createState() => _SaveButton();
 }
 
 class _SaveButton extends State<SaveButton> {
-  bool _savePressed = false;
-  
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,20 +22,25 @@ class _SaveButton extends State<SaveButton> {
       child: ElevatedButton(
           onPressed: () => {
                 setState(() {
-                  var s = Singleton();
-                  // ignore: avoid_print
-                  print(s.userName);
-                  print("CLICKED SAVE");
-                  saveArticleToUser(widget.article); //Save an individual article in firestore, for a user
-                  _savePressed = !_savePressed;
+                  if (!widget.article.saved) {
+                    print(widget.article.hash);
+                    saveArticleToUser(
+                        widget.article.hash,
+                        widget.article
+                            .jsonData); //Save an individual article in firestore, for a user
+                  } else {
+                    deleteArticleHashFromUser(widget.article.hash);
+                  } //remove it from the database
+                  widget.article.saved = !widget.article.saved;
                 })
               },
           style: ElevatedButton.styleFrom(
-              foregroundColor: _savePressed ? Colors.teal : Colors.black,
-              backgroundColor: _savePressed ? Colors.teal : Colors.black),
-          child: Text(_savePressed ? "Saved" : "save",
+              foregroundColor:
+                  widget.article.saved ? Colors.teal : Colors.black,
+              backgroundColor:
+                  widget.article.saved ? Colors.teal : Colors.black),
+          child: Text(widget.article.saved ? "Saved" : "save",
               style: const TextStyle(color: Colors.white))),
     );
-
   }
 }

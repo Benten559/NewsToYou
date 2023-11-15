@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:NewsToYou/services/save_article.dart';
 import 'package:http/http.dart' as http;
 import 'package:NewsToYou/model/article_model.dart';
 import 'package:NewsToYou/auth/secrets.dart' as secrets;
@@ -18,6 +19,14 @@ class ApiService {
     List<dynamic> body = json['articles'];
     List<Article> articles =
         body.map((dynamic item) => Article.fromJson(item)).toList();
+
+    // Get a list of all hashes in db
+    final hashesList = await getUserSavedArticles();
+    if (hashesList.isNotEmpty) {
+      for (int i = 0; i < articles.length; i++) {
+        articles[i].saved = hashesList.contains(articles[i].hash);
+      }
+    }
     return articles;
   }
 }
