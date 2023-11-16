@@ -15,8 +15,7 @@ class TrendingPage extends StatefulWidget {
 }
 
 class _TrendingPage extends State<TrendingPage> {
-  ApiService client = ApiService();
-  static final links = ['flutter'];
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,25 +43,11 @@ class _TrendingPage extends State<TrendingPage> {
           ],
         ),
       ),
-        body: SafeArea(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: links.map((link) => _urlButton(context, link)).toList(),
-                )));
+);
   }
-
-      Widget _urlButton(BuildContext context, String url) {
-      return Container(
-          padding: EdgeInsets.all(20.0),
-          child: ElevatedButton(
-            child: Text(url),
-            onPressed: () => _handleURLButtonPress(context, url),
-          ));
-    }
 
     void _handleURLButtonPress(BuildContext context, String url) {
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => WebViewPage()));
+          MaterialPageRoute(builder: (context) => WebViewPage("")));
     }
   }

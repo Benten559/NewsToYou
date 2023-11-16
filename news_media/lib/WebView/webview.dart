@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:NewsToYou/model/article_model.dart';
 
 class WebViewPage extends StatefulWidget {
-  const WebViewPage({super.key});
+  final String url;
+
+  const WebViewPage(this.url, {super.key});
 
   @override
-  State<WebViewPage> createState() => _WebViewPageState();
+  State<WebViewPage> createState() => _WebViewPageState(url);
 }
 
 class _WebViewPageState extends State<WebViewPage> {
   var loadingPercentage = 0;
   late final WebViewController controller;
+
+  _WebViewPageState(String url);
 
   @override
   void initState() {
@@ -34,7 +39,7 @@ class _WebViewPageState extends State<WebViewPage> {
         },
       ))
       ..loadRequest(
-        Uri.parse('https://flutter.dev'),
+        Uri.parse(widget.url),
       );
   }
 
