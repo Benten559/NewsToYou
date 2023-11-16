@@ -1,10 +1,13 @@
 import 'package:NewsToYou/customized/app_colors.dart';
 import 'package:NewsToYou/customized/ourlogo.dart';
 import 'package:NewsToYou/login/login.dart';
+import 'package:NewsToYou/navigationmenu/navigationmenu.dart';
 import 'package:NewsToYou/news_feed/news_feed.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:NewsToYou/customized/commonbtn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -19,6 +22,9 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController usernamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController cpasswordcontroller = TextEditingController();
+  TextEditingController nicknamecontroller = TextEditingController();
+  String selectedGender = 'Male';
+  TextEditingController agecontroller = TextEditingController();
   int _currentStep = 0;
   bool _useristyping = false;
   bool _usercheck = false;
@@ -27,6 +33,8 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _cpasswordistyping = false;
   bool _cpasswordmatch = false;
   bool obscureText = true;
+  bool _nickcheck=false;
+  bool _agecheck=false;
 
   ///password obscuretext setting
   bool cobscureText = true;
@@ -60,10 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         CommonBtn(
                           text: 'Next',
                           ///this super long if statement indicates if all the requirements satisfied, then you can press register and go back to login page to login
-                          onPressed: _currentStep<2?
-                          (_usercheck&&_passwordcheck&&_cpasswordmatch? details.onStepContinue :
-                          null):() {
-                            ;},
+                          onPressed:_usercheck&&_passwordcheck&&_cpasswordmatch? details.onStepContinue : null,
                           height: 60,
                           width: double.infinity,
                           radius: 6,
@@ -74,7 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       if(_currentStep == 1 )
                       CommonBtn(
                         text: 'Next',
-                        onPressed: details.onStepContinue,
+                        onPressed: _nickcheck&&_agecheck?details.onStepContinue:null,
                         height: 60,
                         width: double.infinity,
                         radius: 6,
@@ -91,8 +96,17 @@ class _SignUpPageState extends State<SignUpPage> {
                                 password: passwordcontroller.text)
                                 .then((value) {
                               Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => LoginPage()));
+                                  MaterialPageRoute(builder: (context) => const NavigationMenu()));
                             });
+                            FirebaseFirestore.instance
+                                .collection('Users')
+                                .doc(usernamecontroller.text)
+                                .set({
+                              'username':usernamecontroller.text,
+                              'nickname':nicknamecontroller.text,
+                              'gender':selectedGender,
+                              'age':agecontroller.text,
+                                });
                           },
                           height: 60,
                           width: double.infinity,
@@ -340,9 +354,115 @@ class _SignUpPageState extends State<SignUpPage> {
                         : StepState.disabled,
                   ),
                   Step(
-                    title: Text('Other info'),
-                    content: const Column(
-                      children: [Text('SKIP THIS!!!')],
+                    title: const Text('Profile info'),
+                    content: Column(
+                      children: [
+                        ///nickname
+                        Container(
+                          height: 60,
+                          padding: const EdgeInsets.only(top: 3, left: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(
+                              color: _nickcheck ? Colors.green : Colors.white,
+                              width: 2.0,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 7,
+                              ),
+                            ],
+                          ),
+                          child: TextField(
+                            controller: nicknamecontroller,
+                            onChanged: (text) {
+                              setState(() {
+                                _nickcheck = true;
+                              });
+                              if (text.isEmpty) {
+                                setState(() {
+                                  _nickcheck = false;
+                                });
+                              }
+                            },
+                            decoration: InputDecoration(
+                              labelText: "NickName",
+                              labelStyle: TextStyle(
+                                color: _nickcheck ? Colors.green : null,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        ///Age
+                        Container(
+                          height: 60,
+                          padding: const EdgeInsets.only(top: 3, left: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(
+                              color: _agecheck ? Colors.green : Colors.white,
+                              width: 2.0,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 7,
+                              ),
+                            ],
+                          ),
+                          child: TextField(
+                            controller: agecontroller,
+                            onChanged: (text) {
+                              setState(() {
+                                _agecheck = true;
+                              });
+                              if (text.isEmpty) {
+                                setState(() {
+                                  _agecheck = false;
+                                });
+                              }
+                            },
+                            decoration: InputDecoration(
+                              labelText: "Age",
+                              labelStyle: TextStyle(
+                                color: _agecheck ? Colors.green : null,
+                              ),
+                              border: InputBorder.none,
+                            ),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                          ),
+                        ),
+
+                        const SizedBox(height: 10),
+
+                        ///Gender
+                        DropdownButton<String>(
+                          value: selectedGender,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              selectedGender = newValue!;
+                            });
+                          },
+                          padding: const EdgeInsets.only(top: 3, left: 15),
+                          items: <String>['Male', 'Female', 'Other']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
                     isActive: _currentStep >= 0,
                     state: _currentStep >= 1
@@ -355,7 +475,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       children: [
                         Text(
                             "You've successfully completed our register form, press the 'Register' button."),
-                        Text("You will be redirected to the login page.")
                       ],
                     ),
                     isActive: _currentStep >= 0,
