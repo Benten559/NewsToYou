@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "news_media_WEB",
+            "cwd": "news_media",
+            "program": "lib/main.dart",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "web-server",
+                "--web-port=5000",
+                "--web-enable-expression-evaluation"
+            ]
+        },
+        {
+            "name": "news_media (profile mode)",
+            "cwd": "news_media",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "news_media (release mode)",
+            "cwd": "news_media",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

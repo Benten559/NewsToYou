@@ -70,7 +70,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
         Container(
           color: Colors.blue,
           alignment: Alignment.center,
-          child: const TrendingPage(), ///search page here!
+          child: const SearchPage(), ///search page here!
         ),
         Container(
           color: Colors.blue,
