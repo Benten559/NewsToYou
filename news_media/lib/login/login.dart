@@ -19,7 +19,6 @@ class _LoginPageState extends State<LoginPage> {
   late String _email, _password;
   final auth = FirebaseAuth.instance;
   bool obscureText = true;
-  String? user = FirebaseAuth.instance.currentUser?.email;
 
   Widget _buildView(BuildContext context) {
     return SafeArea(
@@ -151,8 +150,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ],
             ),
-
-            Text(user == null ? 'N/A' : user!),
 
             //if forgot username/password
             const Row(
