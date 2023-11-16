@@ -3,15 +3,15 @@ import 'package:NewsToYou/model/article_model.dart';
 import 'package:NewsToYou/services/api_service.dart';
 import 'package:flutter/material.dart';
 
-class TrendingPage extends StatefulWidget {
-  const TrendingPage({super.key});
+class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _TrendingPageState createState() => _TrendingPageState();
+  _SearchPageState createState() => _SearchPageState();
 }
 
-class _TrendingPageState extends State<TrendingPage> {
+class _SearchPageState extends State<SearchPage> {
   TextEditingController _searchController = TextEditingController();
   ApiService client = ApiService();
   List<Article> _searchResults = [];
