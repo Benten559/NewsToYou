@@ -9,7 +9,7 @@ Widget customListTile(Article article) {
     onTap: () => launch(article.url),
     child: Container(
       margin: const EdgeInsets.all(12.0),
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets. all(8.0),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12.0),

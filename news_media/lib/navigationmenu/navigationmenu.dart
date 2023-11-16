@@ -2,6 +2,9 @@ import 'package:NewsToYou/news_feed/news_feed.dart';
 import 'package:NewsToYou/profilepage/profilepage.dart';
 import 'package:flutter/material.dart';
 
+import '../Trending/trendingpage.dart';
+import '../WebView/webview.dart';
+
 class NavigationMenu extends StatefulWidget{
   const NavigationMenu ({super.key});
 
@@ -59,7 +62,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
         Container(
           color: Colors.green,
           alignment: Alignment.center,
-          child: const Text('Trending Page'), ///trending page here!
+          child: TrendingPage(), ///trending page here! const Text('Trending Page')
         ),
         Container(
           color: Colors.blue,
