@@ -1,15 +1,16 @@
+import 'package:NewsToYou/WebView/webview.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:NewsToYou/model/article_model.dart';
 import 'package:NewsToYou/components/save_indicator.dart';
 
 Widget customListTile(Article article) {
+
+
   return InkWell(
     // ignore: deprecated_member_use
-    onTap: () => launch(article.url),
     child: Container(
       margin: const EdgeInsets.all(12.0),
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets. all(8.0),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12.0),
