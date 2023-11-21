@@ -4,7 +4,6 @@ import 'package:NewsToYou/search_page/search_page.dart';
 import 'package:flutter/material.dart';
 
 import '../Trending/trendingpage.dart';
-import '../WebView/webview.dart';
 
 class NavigationMenu extends StatefulWidget{
   const NavigationMenu ({super.key});
@@ -58,12 +57,12 @@ class _NavigationMenuState extends State<NavigationMenu> {
         Container(
           color: Colors.red,
           alignment: Alignment.center,
-          child: NewsFeedPage(), ///NewsFeedPage here!
+          child: const NewsFeedPage(), ///NewsFeedPage here!
         ),
         Container(
           color: Colors.green,
           alignment: Alignment.center,
-          child: TrendingPage(), ///trending page here! const Text('Trending Page')
+          child: const TrendingPage(), ///trending page here! const Text('Trending Page')
         ),
         Container(
           color: Colors.blue,
@@ -78,7 +77,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
         Container(
           color: Colors.blue,
           alignment: Alignment.center,
-          child: ProfilePage(),
+          child: const ProfilePage(),
         ),
       ][currentPageIndex],
     );

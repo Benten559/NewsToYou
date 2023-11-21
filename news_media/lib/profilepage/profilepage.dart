@@ -1,4 +1,3 @@
-import 'package:NewsToYou/customized/ourlogo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:NewsToYou/customized/commonbtn.dart';
@@ -35,7 +34,7 @@ class _ProfilePage extends State<ProfilePage> {
           elevation: 0,
           actions: [
             IconButton(
-              icon: Icon(Icons.settings),
+              icon: const Icon(Icons.settings),
               onPressed: () {
 
               },
@@ -109,13 +108,13 @@ class _ProfilePage extends State<ProfilePage> {
                                             actions: [
                                               TextButton(
                                                   onPressed: ()=>Navigator.pop(context),
-                                                  child: Text(
+                                                  child: const Text(
                                                     'Cancel',
                                                     style: TextStyle(color: Colors.white),
                                                   )),
                                               TextButton(
                                                   onPressed: ()=>Navigator.of(context).pop(newvalue),
-                                                  child: Text(
+                                                  child: const Text(
                                                     "save",
                                                     style: TextStyle(color: Colors.white),
                                                   ))
@@ -187,13 +186,13 @@ class _ProfilePage extends State<ProfilePage> {
                                             actions: [
                                               TextButton(
                                                   onPressed: ()=>Navigator.pop(context),
-                                                  child: Text(
+                                                  child: const Text(
                                                     'Cancel',
                                                     style: TextStyle(color: Colors.white),
                                                   )),
                                               TextButton(
                                                   onPressed: ()=>Navigator.of(context).pop(newvalue),
-                                                  child: Text(
+                                                  child: const Text(
                                                     "save",
                                                     style: TextStyle(color: Colors.white),
                                                   ))
@@ -267,7 +266,7 @@ class _ProfilePage extends State<ProfilePage> {
                                           actions: [
                                             TextButton(
                                               onPressed: () => Navigator.pop(context),
-                                              child: Text(
+                                              child: const Text(
                                                 'Cancel',
                                                 style: TextStyle(color: Colors.white),
                                               ),
@@ -277,7 +276,7 @@ class _ProfilePage extends State<ProfilePage> {
                                                 Navigator.of(context).pop(selectedGender);
                                                 await usercollection.doc(user.email!).update({"gender": selectedGender});
                                               },
-                                              child: Text(
+                                              child: const Text(
                                                 "Save",
                                                 style: TextStyle(color: Colors.white),
                                               ),
@@ -317,7 +316,7 @@ class _ProfilePage extends State<ProfilePage> {
               return Center(
                 child: Text('Error${snapshot.error}'),
               );
-            };
+            }
 
             return const Center(child: CircularProgressIndicator(),);
           },

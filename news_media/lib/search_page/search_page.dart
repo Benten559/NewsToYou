@@ -12,11 +12,11 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   ApiService client = ApiService();
   List<Article> _searchResults = [];
-  bool _matchCase = false;
-  bool _exactMatch = false;
+  final bool _matchCase = false;
+  final bool _exactMatch = false;
   bool _searchPrompted = false;
 
   @override
@@ -37,7 +37,7 @@ class _SearchPageState extends State<SearchPage> {
                     decoration: InputDecoration(
                       labelText: 'Search',
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.search),
+                        icon: const Icon(Icons.search),
                         onPressed: () {
                           _searchPrompted = true;
                           // Trigger search when search is pressed.

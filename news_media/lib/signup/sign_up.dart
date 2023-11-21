@@ -1,7 +1,6 @@
 import 'package:NewsToYou/customized/app_colors.dart';
 import 'package:NewsToYou/customized/ourlogo.dart';
 import 'package:NewsToYou/login/login.dart';
-import 'package:NewsToYou/news_feed/news_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:NewsToYou/customized/commonbtn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,13 +16,13 @@ class _SignUpPageState extends State<Sign_UpPage> {
   TextEditingController usernamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController cpasswordcontroller = TextEditingController();
-  int _currentStep = 0;
-  bool _useristyping = false;
-  bool _usercheck = false;
-  bool _passwordistyping = false;
-  bool _passwordcheck = false;
-  bool _cpasswordistyping = false;
-  bool _cpasswordmatch = false;
+  final int _currentStep = 0;
+  final bool _useristyping = false;
+  final bool _usercheck = false;
+  final bool _passwordistyping = false;
+  final bool _passwordcheck = false;
+  final bool _cpasswordistyping = false;
+  final bool _cpasswordmatch = false;
   bool obscureText = true;
 
   ///password obscuretext setting
@@ -57,7 +56,7 @@ class _SignUpPageState extends State<Sign_UpPage> {
                 ],
               ),
               child: TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Email",
                   border: InputBorder.none,
                 ),
@@ -114,7 +113,7 @@ class _SignUpPageState extends State<Sign_UpPage> {
                   text: 'Sign Up',
                   onPressed:(){
               auth.signInWithEmailAndPassword(email: _email, password: _password).then((_){
-              Navigator.push(context,MaterialPageRoute(builder: (context) => LoginPage()));
+              Navigator.push(context,MaterialPageRoute(builder: (context) => const LoginPage()));
               });
               },
               height: 60,

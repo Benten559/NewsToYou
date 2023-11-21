@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import '../WebView/webview.dart';
 
 class NewsFeedPage extends StatefulWidget {
-  NewsFeedPage({Key? key}) : super(key: key);
+  const NewsFeedPage({Key? key}) : super(key: key);
 
   @override
   State<NewsFeedPage> createState() => _NewsFeedPage();

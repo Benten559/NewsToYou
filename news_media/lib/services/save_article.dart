@@ -1,7 +1,4 @@
-import 'dart:convert';
 
-import 'package:NewsToYou/model/article_model.dart';
-import 'package:NewsToYou/utility/hash/hash_generator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
