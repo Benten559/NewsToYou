@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:NewsToYou/services/save_article.dart';
+import 'package:NewsToYou/services/article_click.dart';
 import 'package:http/http.dart' as http;
 import 'package:NewsToYou/model/article_model.dart';
 import 'package:NewsToYou/auth/secrets.dart' as secrets;
