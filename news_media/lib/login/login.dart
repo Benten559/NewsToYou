@@ -2,7 +2,6 @@ import 'package:NewsToYou/customized/app_colors.dart';
 import 'package:NewsToYou/customized/ourlogo.dart';
 import 'package:NewsToYou/globals/user_session.dart';
 import 'package:NewsToYou/navigationmenu/navigationmenu.dart';
-import 'package:NewsToYou/news_feed/news_feed.dart';
 import 'package:NewsToYou/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:NewsToYou/customized/commonbtn.dart';
@@ -45,7 +44,7 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               child: TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Email",
                   border: InputBorder.none,
                 ),

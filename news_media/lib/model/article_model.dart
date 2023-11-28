@@ -49,4 +49,22 @@ class Article {
       content: nullCheck(json['content']),
     );
   }
+
+  /// This generator constructor is used when loading an article from
+  /// the database. It is not necessary to generate a hash, use the one used to 
+  /// reference the database entry
+  factory Article.fromDB(Map<String, dynamic> json, refHash) {
+    return Article(
+      jsonData: json, // Store the original JSON data here
+      hash: refHash,
+      source: Source.fromJson(json['source']),
+      author: nullCheck(json['author']),
+      title: nullCheck(json['title']),
+      description: nullCheck(json['description']),
+      url: nullCheck(json['url']),
+      urlToImage: nullCheck(json['urlToImage']),
+      publishedAt: nullCheck(json['publishedAt']),
+      content: nullCheck(json['content']),
+    );
+  }
 }

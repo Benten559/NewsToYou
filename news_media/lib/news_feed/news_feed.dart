@@ -2,12 +2,11 @@ import 'package:NewsToYou/customized/ourlogo.dart';
 import 'package:NewsToYou/model/article_model.dart';
 import 'package:NewsToYou/services/api_service.dart';
 import 'package:NewsToYou/components/customListTile.dart';
+import 'package:NewsToYou/utility/callbacks/article_tile.dart';
 import 'package:flutter/material.dart';
 
-import '../WebView/webview.dart';
-
 class NewsFeedPage extends StatefulWidget {
-  NewsFeedPage({Key? key}) : super(key: key);
+  const NewsFeedPage({Key? key}) : super(key: key);
 
   @override
   State<NewsFeedPage> createState() => _NewsFeedPage();
@@ -15,11 +14,6 @@ class NewsFeedPage extends StatefulWidget {
 
 class _NewsFeedPage extends State<NewsFeedPage> {
   ApiService client = ApiService();
-
-  void _handleURLButtonPress(BuildContext context, String url) {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => WebViewPage(url)));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,14 +48,12 @@ class _NewsFeedPage extends State<NewsFeedPage> {
             if (snapshot.hasData) {
               List<Article>? articles = snapshot.data;
               return ListView.builder(
-                  itemCount: articles?.length,
-                  itemBuilder: (context, index) =>
-                  InkWell(
-                      onTap: () => _handleURLButtonPress(context, articles[index].url),
-                      child:
-                      customListTile(articles![index])
-                  ),
-                  );
+                itemCount: articles?.length,
+                itemBuilder: (context, index) => InkWell(
+                    onTap: () => handleURLButtonPress(
+                        context, articles[index].url),
+                    child: customListTile(articles![index])),
+              );
             }
 
             return const Center(

@@ -1,8 +1,5 @@
-import 'package:NewsToYou/customized/app_colors.dart';
 import 'package:NewsToYou/customized/ourlogo.dart';
-import 'package:NewsToYou/login/login.dart';
 import 'package:NewsToYou/navigationmenu/navigationmenu.dart';
-import 'package:NewsToYou/news_feed/news_feed.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:NewsToYou/customized/commonbtn.dart';
@@ -470,7 +467,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         : StepState.disabled,
                   ),
                   Step(
-                    title: Text('Done'),
+                    title: const Text('Done'),
                     content: const Column(
                       children: [
                         Text(

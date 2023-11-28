@@ -1,5 +1,5 @@
 import 'package:NewsToYou/model/article_model.dart';
-import 'package:NewsToYou/services/save_article.dart';
+import 'package:NewsToYou/services/article_click.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -23,7 +23,6 @@ class _SaveButton extends State<SaveButton> {
           onPressed: () => {
                 setState(() {
                   if (!widget.article.saved) {
-                    print(widget.article.hash);
                     saveArticleToUser(
                         widget.article.hash,
                         widget.article

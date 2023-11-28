@@ -1,12 +1,9 @@
-import 'dart:convert';
-
 import 'package:NewsToYou/model/article_model.dart';
-import 'package:NewsToYou/utility/hash/hash_generator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 /// Query the database in order to retrieve a list of all
-/// currently stored articles
+/// currently stored articles as hashes
 Future<List<String>> getUserSavedArticles() async {
   try {
     final user = FirebaseAuth.instance.currentUser;
@@ -24,6 +21,42 @@ Future<List<String>> getUserSavedArticles() async {
     print(
         "getUserSavedArticles()::Error failed to retrieve all user hashes: $e");
     return <String>[];
+  }
+}
+
+/// Query the database and retrieve the JSON associated with
+/// all a user's saved articles
+Future<List<Article>> getUserSavedArticlesJSON() async {
+  try {
+    final userHashes = await getUserSavedArticles();
+    // Map<String, dynamic> articlesJson = {};
+    List<Article> articlesJson = [];
+    if (userHashes.isNotEmpty) {
+      for (final hash in userHashes) {
+        final articleSnapshot = await FirebaseFirestore.instance
+            .collection("Articles")
+            .doc(hash)
+            .get();
+        if (articleSnapshot.exists) {
+          articlesJson.add(Article.fromDB(articleSnapshot.data()!['articlejson'], hash));
+        } else {
+          print("SNAPSHOT DOES NOT EXIST $articleSnapshot");
+        }
+      }
+    } else {
+      print("IT WAS EMPTY");
+    }
+    for (int i = 0; i < articlesJson.length; i++)
+    {
+      // Initialize all these to true since we just retrieved them from the DB
+      articlesJson[i].saved = true;
+    }
+    return articlesJson;
+  } catch (e) {
+    print(
+        "getUserSavedArticlesJSON()::Error failed to retrieve all user articles");
+    final List<Article> defaultRet = [];
+    return defaultRet;
   }
 }
 
@@ -92,11 +125,9 @@ Future<void> saveArticleToUser(
 }
 
 /// Perform a field deletion from the database
-/// 
-void deleteArticleHashFromUser(String hash) async
-{
-  try
-  {
+///
+void deleteArticleHashFromUser(String hash) async {
+  try {
     final user = FirebaseAuth.instance.currentUser;
     await FirebaseFirestore.instance
         .collection('SavedArticles')
@@ -104,10 +135,10 @@ void deleteArticleHashFromUser(String hash) async
         .update({
       'article': FieldValue.arrayRemove([hash])
     });
-  }
-  catch (e)
-  {
+    print("removed: $hash from : " + user!.email.toString());
+  } catch (e) {
     // ignore: avoid_print
-    print("deleteArticleHashFromUser()::Could not delete the saved article: $e");
+    print(
+        "deleteArticleHashFromUser()::Could not delete the saved article: $e");
   }
 }
