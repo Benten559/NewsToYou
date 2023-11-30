@@ -57,12 +57,12 @@ class _NavigationMenuState extends State<NavigationMenu> {
         Container(
           color: Colors.red,
           alignment: Alignment.center,
-          child: const NewsFeedPage(), ///NewsFeedPage here!
+          child: const TrendingPage(), ///trending page here!
         ),
         Container(
           color: Colors.green,
           alignment: Alignment.center,
-          child: const TrendingPage(), ///trending page here! const Text('Trending Page')
+          child: const NewsFeedPage(), ///NewsFeedPage here! const Text('Trending Page')
         ),
         Container(
           color: Colors.blue,
