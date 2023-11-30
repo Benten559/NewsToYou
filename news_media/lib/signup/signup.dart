@@ -16,12 +16,24 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final auth = FirebaseAuth.instance;
 
+  List<String> selectedCategories = []; ///User selected categories
+  List<String> allCategories = [        ///categories list
+    'AutoMobiles',
+    'Airplanes',
+    'Finance',
+    'Politics',
+    'War',
+    'Technology',
+    'Music',
+    'Movies',
+    'Games',
+    'Academics',
+  ];
+
   TextEditingController usernamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   TextEditingController cpasswordcontroller = TextEditingController();
   TextEditingController nicknamecontroller = TextEditingController();
-  String selectedGender = 'Male';
-  TextEditingController agecontroller = TextEditingController();
   int _currentStep = 0;
   bool _useristyping = false;
   bool _usercheck = false;
@@ -31,7 +43,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _cpasswordmatch = false;
   bool obscureText = true;
   bool _nickcheck=false;
-  bool _agecheck=false;
+  bool _fcategorycheck=false;
 
   ///password obscuretext setting
   bool cobscureText = true;
@@ -76,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       if(_currentStep == 1 )
                       CommonBtn(
                         text: 'Next',
-                        onPressed: _nickcheck&&_agecheck?details.onStepContinue:null,
+                        onPressed: _nickcheck&&_fcategorycheck?details.onStepContinue:null,
                         height: 60,
                         width: double.infinity,
                         radius: 6,
@@ -101,8 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 .set({
                               'username':usernamecontroller.text,
                               'nickname':nicknamecontroller.text,
-                              'gender':selectedGender,
-                              'age':agecontroller.text,
+                              'categories': selectedCategories,
                                 });
                           },
                           height: 60,
@@ -396,66 +407,29 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         const SizedBox(height: 10),
 
-                        ///Age
-                        Container(
-                          height: 60,
-                          padding: const EdgeInsets.only(top: 3, left: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(
-                              color: _agecheck ? Colors.green : Colors.white,
-                              width: 2.0,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 7,
-                              ),
-                            ],
-                          ),
-                          child: TextField(
-                            controller: agecontroller,
-                            onChanged: (text) {
-                              setState(() {
-                                _agecheck = true;
-                              });
-                              if (text.isEmpty) {
+                        const Text("Please select at least 1 category you like:"),
+
+                        ///favorite categories list
+                        Column(
+                          children: allCategories.map((category) {
+                            return CheckboxListTile(
+                              title: Text(category),
+                              value: selectedCategories.contains(category),
+                              onChanged: (bool? value) {
                                 setState(() {
-                                  _agecheck = false;
+                                  if (value != null) {
+                                    _fcategorycheck=true;
+                                    if (value) {
+                                      selectedCategories.add(category);
+                                    } else {
+                                      selectedCategories.remove(category);
+                                    }
+                                    if(selectedCategories.isEmpty){
+                                      _fcategorycheck=false;
+                                    }
+                                  }
                                 });
-                              }
-                            },
-                            decoration: InputDecoration(
-                              labelText: "Age",
-                              labelStyle: TextStyle(
-                                color: _agecheck ? Colors.green : null,
-                              ),
-                              border: InputBorder.none,
-                            ),
-                            keyboardType: TextInputType.number,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly,
-                            ],
-                          ),
-                        ),
-
-                        const SizedBox(height: 10),
-
-                        ///Gender
-                        DropdownButton<String>(
-                          value: selectedGender,
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              selectedGender = newValue!;
-                            });
-                          },
-                          padding: const EdgeInsets.only(top: 3, left: 15),
-                          items: <String>['Male', 'Female', 'Other']
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
+                              },
                             );
                           }).toList(),
                         ),
