@@ -29,7 +29,6 @@ Future<List<String>> getUserSavedArticles() async {
 Future<List<Article>> getUserSavedArticlesJSON() async {
   try {
     final userHashes = await getUserSavedArticles();
-    // Map<String, dynamic> articlesJson = {};
     List<Article> articlesJson = [];
     if (userHashes.isNotEmpty) {
       for (final hash in userHashes) {
@@ -38,16 +37,16 @@ Future<List<Article>> getUserSavedArticlesJSON() async {
             .doc(hash)
             .get();
         if (articleSnapshot.exists) {
-          articlesJson.add(Article.fromDB(articleSnapshot.data()!['articlejson'], hash));
+          articlesJson.add(
+              Article.fromDB(articleSnapshot.data()!['articlejson'], hash));
         } else {
           print("SNAPSHOT DOES NOT EXIST $articleSnapshot");
         }
       }
     } else {
-      print("IT WAS EMPTY");
+      print("No Articles to load");
     }
-    for (int i = 0; i < articlesJson.length; i++)
-    {
+    for (int i = 0; i < articlesJson.length; i++) {
       // Initialize all these to true since we just retrieved them from the DB
       articlesJson[i].saved = true;
     }
@@ -102,7 +101,22 @@ Future<void> saveArticleJSON(
   }
 }
 
-/// Performs 2 database operations, based on the relevant `Article` model type
+/// Checks whether a certain collection contains a user's email as a document.
+/// This is necessary when attempting to save/load data listed under a user.
+/// Should an email not be within an collections document id's then single one will be added.
+/// The document is added along with a stub field entry denoted by `fieldKey` and given an empty array value
+/// `collection` : The collection table to look reference
+/// `email` : The field to search for
+/// `fieldKey : (Optional) The field name to add under a users document `email` 
+Future<void> addUserEmailInCollection(String collection, String? email, [String fieldKey = 'article']) async {
+  final userDoc = FirebaseFirestore.instance.collection(collection).doc(email);
+  final user = await userDoc.get();
+  if (!user.exists) {
+    userDoc.set({fieldKey: []});
+  }
+}
+
+/// Performs 2 database op erations, based on the relevant `Article` model type
 /// data [hash] and [artJson]. Where [hash] is mapped to a users email in the
 /// `SavedArticles` collection, and the articles json is mapped to its hash in the
 ///  `articlejson` collection using method `saveArticleJSON`
@@ -110,6 +124,7 @@ Future<void> saveArticleToUser(
     String hash, Map<String, dynamic> artJson) async {
   try {
     final user = FirebaseAuth.instance.currentUser;
+    await addUserEmailInCollection("SavedArticles",user!.email, 'article');
     await FirebaseFirestore.instance
         .collection('SavedArticles')
         .doc(user!.email)
