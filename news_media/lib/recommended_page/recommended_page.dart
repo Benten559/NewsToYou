@@ -127,7 +127,7 @@ class _RecommendedPage extends State<RecommendedPage> {
                                       width: MediaQuery.of(context).size.width,
                                       child: ListView.builder(
                                         shrinkWrap: true,
-                                        scrollDirection: Axis.horizontal,
+                                        scrollDirection: Axis.vertical,
                                         itemCount: filteredItems.length,
                                         itemBuilder: (context, itemIndex) =>
                                             InkWell(
