@@ -93,7 +93,7 @@ class _SearchPageState extends State<SearchPage> {
                   return ListView.builder(
                     itemCount: _searchResults.length,
                     itemBuilder: (context, index) {
-                      return customListTile(_searchResults[index]);
+                      return customListTile(_searchResults[index], context);
                     },
                   );
                 }

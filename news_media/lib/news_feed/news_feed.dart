@@ -48,12 +48,12 @@ class _NewsFeedPage extends State<NewsFeedPage> {
             if (snapshot.hasData) {
               List<Article>? articles = snapshot.data;
               return ListView.builder(
-                itemCount: articles?.length,
-                itemBuilder: (context, index) => InkWell(
-                    onTap: () => handleURLButtonPress(
-                        context, articles[index].url),
-                    child: customListTile(articles![index])),
-              );
+                  itemCount: articles?.length,
+                  itemBuilder: (context, index) => InkWell(
+                        onTap: () =>
+                            handleURLButtonPress(context, articles[index].url),
+                        child: customListTile(articles![index], context),
+                      ));
             }
 
             return const Center(

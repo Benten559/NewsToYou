@@ -306,7 +306,7 @@ class _ProfilePage extends State<ProfilePage> {
                           itemBuilder: (context, index) => InkWell(
                               onTap: () => handleURLButtonPress(
                                   context, _savedArticles[index].url),
-                              child: customListTile(_savedArticles[index])),
+                              child: customListTile(_savedArticles[index], context)),
                         );
                       }
                     },
