@@ -302,16 +302,22 @@ class _ProfilePage extends State<ProfilePage> {
                             itemCount: _savedArticles.length,
                             itemBuilder: (context, index) => InkWell(
                               onTap: () => handleURLButtonPress(
-                                context,
-                                _savedArticles[index].url,
-                              ),
-                              child: customListTile(_savedArticles[index]),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                  ],
+                                  context, _savedArticles[index].url),
+                              child: customListTile(_savedArticles[index], context)),
+                        );
+                      }
+                    },
+                  )],
+                ),
+
+                CommonBtn(
+                  text: 'Logout',
+                  onPressed: () async {
+                    await _signOut();
+                  },
+                  height: 60,
+                  width: double.infinity,
+                  radius: 6,
                 ),
               ],
             );

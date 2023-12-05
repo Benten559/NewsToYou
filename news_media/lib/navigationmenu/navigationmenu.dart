@@ -1,5 +1,6 @@
 import 'package:NewsToYou/news_feed/news_feed.dart';
 import 'package:NewsToYou/profilepage/profilepage.dart';
+import 'package:NewsToYou/recommended_page/recommended_page.dart';
 import 'package:NewsToYou/search_page/search_page.dart';
 import 'package:flutter/material.dart';
 
@@ -67,7 +68,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
         Container(
           color: Colors.blue,
           alignment: Alignment.center,
-          child: const Text('Recommend Page'), ///recommend page here!
+          child: const RecommendedPage(),//const Text('Recommend Page'), ///recommend page here!
         ),
         Container(
           color: Colors.blue,

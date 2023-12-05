@@ -107,8 +107,9 @@ Future<void> saveArticleJSON(
 /// The document is added along with a stub field entry denoted by `fieldKey` and given an empty array value
 /// `collection` : The collection table to look reference
 /// `email` : The field to search for
-/// `fieldKey : (Optional) The field name to add under a users document `email` 
-Future<void> addUserEmailInCollection(String collection, String? email, [String fieldKey = 'article']) async {
+/// `fieldKey : (Optional) The field name to add under a users document `email`
+Future<void> addUserEmailInCollection(String collection, String? email,
+    [String fieldKey = 'article']) async {
   final userDoc = FirebaseFirestore.instance.collection(collection).doc(email);
   final user = await userDoc.get();
   if (!user.exists) {
@@ -124,7 +125,7 @@ Future<void> saveArticleToUser(
     String hash, Map<String, dynamic> artJson) async {
   try {
     final user = FirebaseAuth.instance.currentUser;
-    await addUserEmailInCollection("SavedArticles",user!.email, 'article');
+    await addUserEmailInCollection("SavedArticles", user!.email, 'article');
     await FirebaseFirestore.instance
         .collection('SavedArticles')
         .doc(user!.email)
@@ -155,5 +156,35 @@ void deleteArticleHashFromUser(String hash) async {
     // ignore: avoid_print
     print(
         "deleteArticleHashFromUser()::Could not delete the saved article: $e");
+  }
+}
+
+Future<List<String>> getUserCategories() async {
+  try {
+    List<String> categoriesList = [];
+    final user = FirebaseAuth.instance.currentUser;
+    final userCategories = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(user!.email)
+        .get();
+    if (userCategories.exists) {
+      print("FOUND SOME CATEGORIES");
+      if (userCategories.data()!.isNotEmpty) {
+        print("THE CATEGORIES: ");
+        categoriesList = (userCategories.data()?['categories'] as List).map((item) => item as String).toList();
+        // print(userCategories.data()!['categories']);
+        // return userCategories.data()!['categories'];
+        return categoriesList;
+      } else {
+        //default return
+        return categoriesList;
+      }
+    } else {
+      //default return
+      return categoriesList;
+    }
+  } catch (e) {
+    print("No categories found under user, $e");
+    return <String>[];
   }
 }

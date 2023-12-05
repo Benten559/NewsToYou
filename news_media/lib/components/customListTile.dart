@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:NewsToYou/model/article_model.dart';
 import 'package:NewsToYou/components/save_indicator.dart';
 
-Widget customListTile(Article article) {
-
-
+Widget customListTile(Article article, BuildContext context) {
   return InkWell(
     // ignore: deprecated_member_use
     child: Container(
       margin: const EdgeInsets.all(12.0),
-      padding: const EdgeInsets. all(8.0),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12.0),
@@ -25,7 +23,7 @@ Widget customListTile(Article article) {
         children: [
           Container(
             height: 200.0,
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width,//double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: NetworkImage(article.urlToImage ?? "N/A"),
