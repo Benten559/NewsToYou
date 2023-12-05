@@ -19,13 +19,12 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePage extends State<ProfilePage> {
-  // ApiService client = ApiService();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final user = FirebaseAuth.instance.currentUser!;
   final usercollection = FirebaseFirestore.instance.collection('Users');
   List<Article> _savedArticles = [];
-  List<String> selectedCategories = []; ///User selected categories
-  List<String> allCategories = [        ///categories list
+  List<String> selectedCategories = [];
+  List<String> allCategories = [
     'AutoMobiles',
     'Airplanes',
     'Finance',
@@ -42,7 +41,9 @@ class _ProfilePage extends State<ProfilePage> {
   Future<void> _signOut() async {
     await _auth.signOut();
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const LoginPage()));
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
   }
 
   @override
@@ -69,24 +70,28 @@ class _ProfilePage extends State<ProfilePage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final userData = snapshot.data?.data() as Map<String, dynamic>?;
-            return Container(
-                child: Column(
-              children: [
-                const SizedBox(height: 50),
 
-                ///Avatar
+            return ListView(
+              children: [
+                CommonBtn(
+                  text: 'Logout',
+                  onPressed: () async {
+                    await _signOut();
+                  },
+                  height: 60,
+                  width: double.infinity,
+                  radius: 6,
+                ),
+                const SizedBox(height: 50),
                 const Icon(
                   Icons.person,
                   size: 72,
                 ),
-
                 Text(
                   user.email!,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey[700]),
                 ),
-
-                ///nickname
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
@@ -97,7 +102,6 @@ class _ProfilePage extends State<ProfilePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ///Section name
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -177,16 +181,11 @@ class _ProfilePage extends State<ProfilePage> {
                           ),
                         ],
                       ),
-
-                      ///Text Content
                       Text(userData?['nickname']),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 10),
-
-                ///Favorite Categories
                 Container(
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
@@ -197,7 +196,6 @@ class _ProfilePage extends State<ProfilePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ///Section name
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -209,7 +207,7 @@ class _ProfilePage extends State<ProfilePage> {
                             onPressed: () async {
                               selectedCategories = List<String>.from(userData?['categories']);
                               List<String> newvalue = [];
-                              newvalue=selectedCategories;
+                              newvalue = selectedCategories;
                               await showModalBottomSheet(
                                 context: context,
                                 backgroundColor: Colors.white,
@@ -243,30 +241,30 @@ class _ProfilePage extends State<ProfilePage> {
                                             ),
                                           ],
                                         ),
-
                                         const Divider(),
-
-                                        Expanded(child: SingleChildScrollView(
-                                          child: Column(
-                                            children: allCategories.map((category) {
-                                              return CheckboxListTile(
-                                                title: Text(category),
-                                                value: newvalue.contains(category),
-                                                onChanged: (bool? value) {
-                                                  setState(() {
-                                                    if (value != null) {
-                                                      if (value) {
-                                                        newvalue.add(category);
-                                                      } else {
-                                                        newvalue.remove(category);
+                                        Expanded(
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              children: allCategories.map((category) {
+                                                return CheckboxListTile(
+                                                  title: Text(category),
+                                                  value: newvalue.contains(category),
+                                                  onChanged: (bool? value) {
+                                                    setState(() {
+                                                      if (value != null) {
+                                                        if (value) {
+                                                          newvalue.add(category);
+                                                        } else {
+                                                          newvalue.remove(category);
+                                                        }
                                                       }
-                                                    }
-                                                  });
-                                                },
-                                              );
-                                            }).toList(),
+                                                    });
+                                                  },
+                                                );
+                                              }).toList(),
+                                            ),
                                           ),
-                                        ),)
+                                        ),
                                       ],
                                     );
                                   },
@@ -280,50 +278,43 @@ class _ProfilePage extends State<ProfilePage> {
                           ),
                         ],
                       ),
-
-                      ///Text Content
                       Text(userData?['categories'].join(', ')),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 10),
-
-                const Text("Archived Articles"),
-                Expanded(
-                  child: FutureBuilder(
-                    future: _fetchArticles(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting &&
-                          _savedArticles.isEmpty) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      } else {
-                        // Display your data using a ListView
-                        return ListView.builder(
-                          itemCount: _savedArticles.length,
-                          itemBuilder: (context, index) => InkWell(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Archived Articles"),
+                    FutureBuilder(
+                      future: _fetchArticles(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting &&
+                            _savedArticles.isEmpty) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(child: Text('Error: ${snapshot.error}'));
+                        } else {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: _savedArticles.length,
+                            itemBuilder: (context, index) => InkWell(
                               onTap: () => handleURLButtonPress(
-                                  context, _savedArticles[index].url),
-                              child: customListTile(_savedArticles[index])),
-                        );
-                      }
-                    },
-                  ),
-                ),
-
-                CommonBtn(
-                  text: 'Logout',
-                  onPressed: () async {
-                    await _signOut();
-                  },
-                  height: 60,
-                  width: double.infinity,
-                  radius: 6,
+                                context,
+                                _savedArticles[index].url,
+                              ),
+                              child: customListTile(_savedArticles[index]),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
                 ),
               ],
-            ));
+            );
           } else if (snapshot.hasError) {
             return Center(
               child: Text('Error${snapshot.error}'),
@@ -335,15 +326,9 @@ class _ProfilePage extends State<ProfilePage> {
           );
         },
       ),
-      // SingleChildScrollView(
-      //   child: _buildView(context),
-      // ),
     );
   }
 
-  /// Helper method to populate widgets `_savedArticles` property.
-  /// Will update the page with results if/when the user prompts for a refresh
-  /// TODO add the refresh functionality
   Future<void> _fetchArticles() async {
     if (_articleRefresh) return;
     _savedArticles = await getUserSavedArticlesJSON();
