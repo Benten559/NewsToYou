@@ -30,6 +30,26 @@ class ApiService {
     return articles;
   }
 
+  Future<Map<String, List<Article>>> getCategoricalArticles() async {
+    Map<String, List<Article>> articlesByCategory = {};
+    try {
+      final categoriesList = await getUserCategories();
+      if (categoriesList.isNotEmpty) {
+        print("THE CATEGORIES OF A USER: $categoriesList");
+        // TODO
+        // Construct map of {category: [articles]}
+        for (int i = 0; i < categoriesList.length; i++) {
+          articlesByCategory[categoriesList[i]] =
+              await searchArticles(categoriesList[i], "");
+        }
+      }
+      return articlesByCategory;
+    } catch (e) {
+      print("Error occurred during getCategoricalArticles() e: $e");
+      return articlesByCategory;
+    }
+  }
+
   /// Enables News API Everything endpoint
   /// Search parameters are as follows
   Future<List<Article>> searchArticles(String q, String sortBy) async {
@@ -38,7 +58,7 @@ class ApiService {
       final client = http.Client();
       final queryParameters = {
         'q': q,
-        'sortBy' : 'popularity',
+        'sortBy': 'popularity',
         // 'pageSize' : 20,
         'apiKey': secrets.newsAPIKey
       };
