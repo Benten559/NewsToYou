@@ -2,6 +2,7 @@ import 'package:NewsToYou/customized/app_colors.dart';
 import 'package:NewsToYou/customized/ourlogo.dart';
 import 'package:NewsToYou/globals/user_session.dart';
 import 'package:NewsToYou/navigationmenu/navigationmenu.dart';
+import 'package:NewsToYou/resetpwpage/reset.dart';
 import 'package:NewsToYou/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:NewsToYou/customized/commonbtn.dart';
@@ -18,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   late String _email, _password;
   final auth = FirebaseAuth.instance;
   bool obscureText = true;
+  String errorstate="";
 
   Widget _buildView(BuildContext context) {
     return SafeArea(
@@ -36,6 +38,10 @@ class _LoginPageState extends State<LoginPage> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(6),
+                border: Border.all(
+                  color: errorstate.isEmpty?Colors.white:Colors.red,
+                  width: 2.0,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
@@ -44,8 +50,11 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
               child: TextField(
-                decoration: const InputDecoration(
-                  hintText: "Email",
+                decoration: InputDecoration(
+                  labelText: errorstate.isEmpty?"Email":errorstate,
+                  labelStyle: TextStyle(
+                    color: errorstate.isEmpty?null:Colors.red,
+                  ),
                   border: InputBorder.none,
                 ),
                 onChanged: (value) {
@@ -65,6 +74,10 @@ class _LoginPageState extends State<LoginPage> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(6),
+                border: Border.all(
+                  color: errorstate.isEmpty?Colors.white:Colors.red,
+                  width: 2.0,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.1),
@@ -84,7 +97,10 @@ class _LoginPageState extends State<LoginPage> {
                       });
                     },
                   ),
-                  hintText: "Password",
+                  labelText: "Password",
+                  labelStyle: TextStyle(
+                    color: errorstate.isEmpty?null:Colors.red,
+                  ),
                   border: InputBorder.none,
                 ),
                 onChanged: (value) {
@@ -105,6 +121,14 @@ class _LoginPageState extends State<LoginPage> {
                 auth
                     .signInWithEmailAndPassword(
                         email: _email, password: _password)
+                    .catchError((e){setState((){
+                      if(e.code=="invalid-login-credentials"){
+                        errorstate="Wrong Email or Password!";
+                      }else{
+                        errorstate=e.code;
+                      }
+                    });
+                })
                     .then((_) {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const NavigationMenu()));
@@ -151,12 +175,12 @@ class _LoginPageState extends State<LoginPage> {
             ),
 
             //if forgot username/password
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 //Sign up text
-                Text(
-                  "Forgot Username/Password? ",
+                const Text(
+                  "Forgot Password? ",
                   style: TextStyle(
                     fontSize: 15,
                     color: AppColors.defaultextcolor,
@@ -164,8 +188,13 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 TextButton(
-                  onPressed: null,
-                  child: Text(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const ResetPage()));
+                  },
+                  child: const Text(
                     "Forgot",
                     style: TextStyle(
                       fontSize: 15,

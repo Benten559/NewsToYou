@@ -15,6 +15,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final auth = FirebaseAuth.instance;
+  String errorstate="";
 
   List<String> selectedCategories = []; ///User selected categories
   List<String> allCategories = [        ///categories list
@@ -35,8 +36,8 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController cpasswordcontroller = TextEditingController();
   TextEditingController nicknamecontroller = TextEditingController();
   int _currentStep = 0;
-  bool _useristyping = false;
-  bool _usercheck = false;
+  bool _emailistypiing = false;
+  bool _emailcheck = false;
   bool _passwordistyping = false;
   bool _passwordcheck = false;
   bool _cpasswordistyping = false;
@@ -44,6 +45,13 @@ class _SignUpPageState extends State<SignUpPage> {
   bool obscureText = true;
   bool _nickcheck=false;
   bool _fcategorycheck=false;
+
+  ///Check if the email satisfied the valid format
+  bool isValidEmail(String email) {
+    String emailPattern = r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$';
+    RegExp regExp = RegExp(emailPattern);
+    return regExp.hasMatch(email);
+  }
 
   ///password obscuretext setting
   bool cobscureText = true;
@@ -77,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         CommonBtn(
                           text: 'Next',
                           ///this super long if statement indicates if all the requirements satisfied, then you can press register and go back to login page to login
-                          onPressed:_usercheck&&_passwordcheck&&_cpasswordmatch? details.onStepContinue : null,
+                          onPressed:_emailcheck&&_passwordcheck&&_cpasswordmatch? details.onStepContinue : null,
                           height: 60,
                           width: double.infinity,
                           radius: 6,
@@ -103,6 +111,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                 .createUserWithEmailAndPassword(
                                 email: usernamecontroller.text,
                                 password: passwordcontroller.text)
+                                .catchError((e){setState((){
+                                      errorstate=e.code;
+                                  });
+                                  })
                                 .then((value) {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) => const NavigationMenu()));
@@ -141,10 +153,11 @@ class _SignUpPageState extends State<SignUpPage> {
                   ///if password length<6, you can't press the next button
                   ///If (password!=confirm password): you can't press the next button
                   Step(
-                    title: const Text('Account'),
+                    title: Text('Account',
+                                style: TextStyle(color: errorstate.isEmpty?null:Colors.red)),
                     content: Column(
                       children: [
-                        ///username
+                        ///Email
                         Container(
                           height: 60,
                           padding: const EdgeInsets.only(top: 3, left: 15),
@@ -152,9 +165,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(6),
                             border: Border.all(
-                              color: _useristyping
-                                  ? (_usercheck ? Colors.green : Colors.red)
-                                  : Colors.white,
+                              color: errorstate.isEmpty?(_emailcheck?Colors.green:(_emailistypiing?Colors.red:Colors.white)):Colors.red,
                               width: 2.0,
                             ),
                             boxShadow: [
@@ -168,32 +179,31 @@ class _SignUpPageState extends State<SignUpPage> {
                             controller: usernamecontroller,
                             onChanged: (text) {
                               setState(() {
-                                _useristyping = true;
+                                _emailistypiing = true;
                               });
-                              if (text.length >= 6) {
+                              if (isValidEmail(text)&&errorstate.isEmpty) {
                                 setState(() {
-                                  _usercheck = true;
+                                  _emailcheck = true;
                                 });
                               } else if (text.isEmpty) {
                                 setState(() {
-                                  _useristyping = false;
+                                  _emailistypiing = false;
                                 });
-                              } else {
+                              } else if(isValidEmail(text)&&errorstate.isNotEmpty){
                                 setState(() {
-                                  _usercheck = false;
+                                  _emailcheck = true;
+                                  errorstate="";
+                                });
+                              }else{
+                                setState(() {
+                                  _emailcheck = false;
                                 });
                               }
                             },
                             decoration: InputDecoration(
-                              labelText: _useristyping
-                                  ? (_usercheck
-                                      ? "Username requirement satisfied"
-                                      : "Length of Username must be longer than or equal to 6 letters")
-                                  : "Username",
+                              labelText: errorstate.isEmpty?(_emailcheck?"Email requirements satisfied!":(_emailistypiing?"Invalid Email format":"Email")):errorstate,
                               labelStyle: TextStyle(
-                                color: _useristyping
-                                    ? (_usercheck ? Colors.green : Colors.red)
-                                    : null,
+                                color: errorstate.isEmpty?(_emailcheck?Colors.green:(_emailistypiing?Colors.red:null)):Colors.red,
                               ),
                               border: InputBorder.none,
                             ),
@@ -442,10 +452,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   Step(
                     title: const Text('Done'),
-                    content: const Column(
+                    content:  Column(
                       children: [
                         Text(
-                            "You've successfully completed our register form, press the 'Register' button."),
+                            "You've successfully completed our register form, press the 'Register' button.$errorstate"),
                       ],
                     ),
                     isActive: _currentStep >= 0,
