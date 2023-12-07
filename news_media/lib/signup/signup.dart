@@ -106,8 +106,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       if (_currentStep == 2)
                         CommonBtn(
                           text: 'Register',
-                          onPressed: () {
-                            FirebaseAuth.instance
+                          onPressed: () async{
+                            await FirebaseAuth.instance
                                 .createUserWithEmailAndPassword(
                                 email: usernamecontroller.text,
                                 password: passwordcontroller.text)
