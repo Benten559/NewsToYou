@@ -31,6 +31,7 @@ class _RecommendedPage extends State<RecommendedPage> {
           toolbarHeight: 105,
           centerTitle: true,
           elevation: 0,
+          backgroundColor: Colors.transparent,
           title: const Column(
             children: [
               OurLogo(),
@@ -76,7 +77,7 @@ class _RecommendedPage extends State<RecommendedPage> {
                               },
                               style: ButtonStyle(
                                 backgroundColor:
-                                    MaterialStateProperty.all<Color>(
+                                MaterialStateProperty.all<Color>(
                                   category == selectedCategory
                                       ? Colors.blue
                                       : Colors.grey,
@@ -103,46 +104,46 @@ class _RecommendedPage extends State<RecommendedPage> {
 
                         return filteredItems != null
                             ? SingleChildScrollView(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    // Category Title
-                                    Container(
-                                      height: 40,
-                                      width: MediaQuery.of(context).size.width,
-                                      padding: const EdgeInsets.all(8),
-                                      color: Colors.grey[300],
-                                      child: Text(
-                                        category,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                    // List of Items
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height,
-                                      width: MediaQuery.of(context).size.width,
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        scrollDirection: Axis.vertical,
-                                        itemCount: filteredItems.length,
-                                        itemBuilder: (context, itemIndex) =>
-                                            InkWell(
-                                                onTap: () => handleURLButtonPress(
-                                                    context,
-                                                    filteredItems[itemIndex].url),
-                                                child: customListTile(
-                                                    filteredItems[itemIndex],
-                                                    context)),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                  ],
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Category Title
+                              Container(
+                                height: 40,
+                                width: MediaQuery.of(context).size.width,
+                                padding: const EdgeInsets.all(8),
+                                color: Colors.grey[300],
+                                child: Text(
+                                  category,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                            )
+                              ),
+                              // List of Items
+                              Container(
+                                height:
+                                MediaQuery.of(context).size.height,
+                                width: MediaQuery.of(context).size.width,
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: filteredItems.length,
+                                  itemBuilder: (context, itemIndex) =>
+                                      InkWell(
+                                          onTap: () => handleURLButtonPress(
+                                              context,
+                                              filteredItems[itemIndex].url),
+                                          child: customListTile(
+                                              filteredItems[itemIndex],
+                                              context)),
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          ),
+                        )
                             : Container(); // Return an empty container for non-matching categories
                       },
                     ),
