@@ -1,6 +1,7 @@
 import 'package:NewsToYou/components/customListTile.dart';
 import 'package:NewsToYou/model/article_model.dart';
 import 'package:NewsToYou/services/api_service.dart';
+import 'package:NewsToYou/utility/callbacks/article_tile.dart';
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
@@ -23,6 +24,8 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
         title: const Text('Search Page'),
       ),
       body: Column(
@@ -80,7 +83,6 @@ class _SearchPageState extends State<SearchPage> {
           ),
           Expanded(
             child: FutureBuilder(
-              // Replace with your actual async function for fetching data
               future: _fetchData(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting &&
@@ -89,12 +91,16 @@ class _SearchPageState extends State<SearchPage> {
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else {
-                  // Display your data using a ListView
                   return ListView.builder(
                     itemCount: _searchResults.length,
-                    itemBuilder: (context, index) {
-                      return customListTile(_searchResults[index], context);
-                    },
+                    itemBuilder: (context, index) => InkWell(
+                      onTap: () => handleURLButtonPress(
+                        context,
+                        _searchResults[index]
+                            .url, // Assuming _searchResults is a list of objects with a 'url' property
+                      ),
+                      child: customListTile(_searchResults[index], context),
+                    ),
                   );
                 }
               },
@@ -118,8 +124,6 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void _performSearch() {
-    // Simulate search logic based on options
-    // Replace this with your actual search logic
     // ignore: avoid_print
     print('Search query: ${_searchController.text}');
     // ignore: avoid_print
