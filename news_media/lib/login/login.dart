@@ -7,6 +7,8 @@ import 'package:NewsToYou/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../forgotpwpage/forgot.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -31,65 +33,45 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 5),
 
             //Username
-            Container(
-              height: 55,
-              padding: const EdgeInsets.only(top: 3, left: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(
-                  color: errorstate.isEmpty?Colors.white:Colors.red,
-                  width: 2.0,
+
+            TextField(
+              decoration: InputDecoration(
+                labelText: errorstate.isEmpty?"Email":errorstate,
+                floatingLabelStyle: TextStyle(
+                  color: errorstate.isEmpty?AppColors.defaulttextcolor:Colors.red,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 7,
-                  ),
-                ],
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  labelText: errorstate.isEmpty?"Email":errorstate,
-                  labelStyle: TextStyle(
-                    color: errorstate.isEmpty?null:Colors.red,
-                  ),
-                  border: InputBorder.none,
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: errorstate.isEmpty?1.0:2.0,
+                      color: errorstate.isEmpty?AppColors.defaulttextcolor:Colors.red,
+                    )
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    _email = value.trim();
-                  });
-                },
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      width: 2.0,
+                      color: errorstate.isEmpty?AppColors.defaulttextcolor:Colors.red
+                  ),
+                ),
               ),
+              onChanged: (value) {
+                setState(() {
+                  _email = value.trim();
+                });
+              },
             ),
 
             const SizedBox(height: 10),
 
             // Password
             Container(
-              height: 55,
-              padding: const EdgeInsets.only(top: 3, left: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(6),
-                border: Border.all(
-                  color: errorstate.isEmpty?Colors.white:Colors.red,
-                  width: 2.0,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 7,
-                  ),
-                ],
-              ),
+              height: 50,
               child: TextField(
                 obscureText: obscureText,
                 decoration: InputDecoration(
                   suffix: IconButton(
                     icon: Icon(
                         obscureText ? Icons.visibility : Icons.visibility_off),
+                    iconSize: 24.0,
                     onPressed: () {
                       setState(() {
                         obscureText = !obscureText;
@@ -97,10 +79,21 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
                   labelText: "Password",
-                  labelStyle: TextStyle(
-                    color: errorstate.isEmpty?null:Colors.red,
+                  floatingLabelStyle: TextStyle(
+                    color: errorstate.isEmpty?AppColors.defaulttextcolor:Colors.red,
                   ),
-                  border: InputBorder.none,
+                  enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        width: errorstate.isEmpty?1.0:2.0,
+                        color: errorstate.isEmpty?AppColors.defaulttextcolor:Colors.red,
+                      )
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        width: 2.0,
+                        color: errorstate.isEmpty?AppColors.defaulttextcolor:Colors.red
+                    ),
+                  ),
                 ),
                 onChanged: (value) {
                   setState(() {
@@ -188,11 +181,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    print("HI");
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const ResetPage()));
+                     Navigator.push(
+                         context,
+                         MaterialPageRoute(
+                             builder: (context) => const ForgotPage()));
                   },
                   child: const Text(
                     "Forgot",
@@ -215,10 +207,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 105,
+        toolbarHeight: 110,
         centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
+        shadowColor: Colors.black,
         title: const Column(
           children: [
             OurLogo(),

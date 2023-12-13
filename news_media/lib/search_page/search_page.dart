@@ -4,6 +4,8 @@ import 'package:NewsToYou/services/api_service.dart';
 import 'package:NewsToYou/utility/callbacks/article_tile.dart';
 import 'package:flutter/material.dart';
 
+import '../customized/app_colors.dart';
+
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
 
@@ -26,7 +28,15 @@ class _SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
-        title: const Text('Search Page'),
+        toolbarHeight: 100,
+        elevation: 0,
+        title: const Text(
+          "Search",
+          style: TextStyle(
+            fontSize: 80,
+            color: AppColors.defaulttextcolor,
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -39,6 +49,20 @@ class _SearchPageState extends State<SearchPage> {
                     controller: _searchController,
                     decoration: InputDecoration(
                       labelText: 'Search',
+                      floatingLabelStyle: const TextStyle(
+                        color: AppColors.defaulttextcolor,
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.defaulttextcolor,
+                          )
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(
+                          width: 2.0,
+                          color: AppColors.defaulttextcolor,
+                        ),
+                      ),
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.search),
                         onPressed: () {
