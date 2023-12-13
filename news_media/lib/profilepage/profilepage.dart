@@ -1,15 +1,14 @@
 import 'package:NewsToYou/components/customListTile.dart';
 import 'package:NewsToYou/model/article_model.dart';
+import 'package:NewsToYou/profilepage/setting.dart';
 import 'package:NewsToYou/services/api_service.dart';
 import 'package:NewsToYou/services/article_click.dart';
 import 'package:NewsToYou/utility/callbacks/article_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:NewsToYou/customized/commonbtn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
-import '../login/login.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -38,13 +37,7 @@ class _ProfilePage extends State<ProfilePage> {
   ];
   bool _articleRefresh = false;
 
-  Future<void> _signOut() async {
-    await _auth.signOut();
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginPage()),
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +50,12 @@ class _ProfilePage extends State<ProfilePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsPage()),
+              );
+            },
           ),
         ],
         title: const Text('Profile'),
@@ -73,16 +71,7 @@ class _ProfilePage extends State<ProfilePage> {
 
             return ListView(
               children: [
-                CommonBtn(
-                  text: 'Logout',
-                  onPressed: () async {
-                    await _signOut();
-                  },
-                  height: 60,
-                  width: double.infinity,
-                  radius: 6,
-                ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 25),
                 const Icon(
                   Icons.person,
                   size: 72,
@@ -308,16 +297,6 @@ class _ProfilePage extends State<ProfilePage> {
                       }
                     },
                   )],
-                ),
-
-                CommonBtn(
-                  text: 'Logout',
-                  onPressed: () async {
-                    await _signOut();
-                  },
-                  height: 60,
-                  width: double.infinity,
-                  radius: 6,
                 ),
               ],
             );

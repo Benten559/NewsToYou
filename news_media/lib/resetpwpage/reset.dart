@@ -1,132 +1,172 @@
-import 'package:NewsToYou/customized/app_colors.dart';
-import 'package:NewsToYou/customized/ourlogo.dart';
-import 'package:NewsToYou/globals/user_session.dart';
-import 'package:NewsToYou/navigationmenu/navigationmenu.dart';
-import 'package:NewsToYou/signup/signup.dart';
+import 'package:NewsToYou/login/login.dart';
 import 'package:flutter/material.dart';
-import 'package:NewsToYou/customized/commonbtn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class ResetPage extends StatefulWidget {
-  const ResetPage({Key? key}) : super(key: key);
-
-  @override
-  State<ResetPage> createState() => _ResetPageState();
+void main() {
+  runApp(MyApp());
 }
 
-class _ResetPageState extends State<ResetPage> {
-  late String _email;
-  final auth = FirebaseAuth.instance;
-  String errorstate="";
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Settings Example',
+      home: SettingsPage(),
+    );
+  }
+}
 
-  Future<void> resetPassword(String email) async {
-      await auth.sendPasswordResetEmail(email: email).catchError((e) {
-        setState(() {
-          errorstate = e.code;
-        });
-      });
+class SettingsPage extends StatefulWidget {
+  @override
+  _SettingsPageState createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  bool _isSwitched = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSettings();
   }
 
-  Widget _buildView(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 5),
+  _loadSettings() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _isSwitched = prefs.getBool('isSwitched') ?? false;
+    });
+  }
 
-            const Text("Please enter your email address. We will email you a link to reset your password."),
-
-            const SizedBox(height: 10),
-
-            //Username
-            Container(
-              height: 55,
-              padding: const EdgeInsets.only(top: 3, left: 15),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(
-                  color: errorstate.isEmpty?Colors.white:Colors.red,
-                  width: 2.0,
-                ),
-                borderRadius: BorderRadius.circular(6),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
-                    blurRadius: 7,
-                  ),
-                ],
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  labelText: errorstate.isEmpty?"Email":errorstate,
-                  labelStyle: TextStyle(
-                    color: errorstate.isEmpty?null:Colors.red,
-                  ),
-                  border: InputBorder.none,
-                ),
-                onChanged: (value) {
-                  setState(() {
-                    _email = value.trim();
-                  });
-                },
-              ),
-            ),
-
-            const SizedBox(height: 10),
-
-
-
-            CommonBtn(
-              text: 'Send',
-              onPressed: () async{
-                errorstate="";
-                await resetPassword(_email);
-                if(errorstate.isEmpty) {
-                  Navigator.pop(context);
-                }
-              },
-              height: 60,
-              width: double.infinity,
-              radius: 6,
-            ),
-
-
-          ],
-        ),
-      ),
-    );
+  _saveSettings(bool value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isSwitched', value);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 105,
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.grey[900],
         elevation: 0,
-        title: const Column(
+        title: const Text('Settings'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            OurLogo(),
-
-            SizedBox(height: 5),
-
-            //page hint
-            Text(
-              'Reset your password',
-              style: TextStyle(
-                color: Colors.black54,
-                fontSize: 15,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Reset Password',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                CommonBtn(
+                  text: 'Reset',
+                  onPressed: () async {
+                    await _resetPassword();
+                  },
+                  height: 40,
+                  width: 100,
+                  radius: 6,
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Logout',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                CommonBtn(
+                  text: 'Logout',
+                  onPressed: () async {
+                    await _signOut();
+                  },
+                  height: 40,
+                  width: 100,
+                  radius: 6,
+                ),
+              ],
             ),
           ],
         ),
       ),
-      body: SingleChildScrollView(
-        child: _buildView(context),
+    );
+  }
+
+  Future<void> _resetPassword() async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    String email = ''; // Add the user's email for password reset
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      print('Resetting password... Email sent.');
+      // You can show a confirmation message to the user
+    } catch (e) {
+      print('Error resetting password: $e');
+      // Handle the error, show an error message, etc.
+    }
+  }
+
+  Future<void> _signOut() async {
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    await _auth.signOut();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
+    print('User logged out');
+  }
+}
+
+class CommonBtn extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+  final double height;
+  final double width;
+  final double radius;
+
+  const CommonBtn({
+    required this.text,
+    required this.onPressed,
+    required this.height,
+    required this.width,
+    required this.radius,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        primary: Colors.blue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(radius),
+        ),
+      ),
+      child: Container(
+        height: height,
+        width: width,
+        alignment: Alignment.center,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+          ),
+        ),
       ),
     );
   }
