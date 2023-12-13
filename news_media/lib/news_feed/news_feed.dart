@@ -22,7 +22,7 @@ class _NewsFeedPage extends State<NewsFeedPage> {
           automaticallyImplyLeading: false,
           toolbarHeight: 105,
           centerTitle: true,
-          //backgroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
           elevation: 0,
           title: const Column(
             children: [
