@@ -1,9 +1,8 @@
 import 'package:NewsToYou/components/customListTile.dart';
 import 'package:NewsToYou/model/article_model.dart';
 import 'package:NewsToYou/services/api_service.dart';
+import 'package:NewsToYou/utility/callbacks/article_tile.dart';
 import 'package:flutter/material.dart';
-
-import '../utility/callbacks/article_tile.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -97,7 +96,8 @@ class _SearchPageState extends State<SearchPage> {
                     itemBuilder: (context, index) => InkWell(
                       onTap: () => handleURLButtonPress(
                         context,
-                        _searchResults[index].url,  // Assuming _searchResults is a list of objects with a 'url' property
+                        _searchResults[index]
+                            .url, // Assuming _searchResults is a list of objects with a 'url' property
                       ),
                       child: customListTile(_searchResults[index], context),
                     ),
@@ -106,7 +106,6 @@ class _SearchPageState extends State<SearchPage> {
               },
             ),
           ),
-
         ],
       ),
     );
@@ -116,7 +115,7 @@ class _SearchPageState extends State<SearchPage> {
     // Simulating search results. Replace this with your actual search logic.
     if (!_searchPrompted) return;
     final articles =
-    await client.searchArticles(_searchController.text, "popularity");
+        await client.searchArticles(_searchController.text, "popularity");
 
     setState(() {
       _searchPrompted = false;
@@ -125,8 +124,6 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void _performSearch() {
-    // Simulate search logic based on options
-    // Replace this with your actual search logic
     // ignore: avoid_print
     print('Search query: ${_searchController.text}');
     // ignore: avoid_print
