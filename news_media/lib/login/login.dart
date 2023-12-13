@@ -5,7 +5,6 @@ import 'package:NewsToYou/navigationmenu/navigationmenu.dart';
 import 'package:NewsToYou/resetpwpage/reset.dart';
 import 'package:NewsToYou/signup/signup.dart';
 import 'package:flutter/material.dart';
-import 'package:NewsToYou/customized/commonbtn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
@@ -189,10 +188,11 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const ResetPage()));
+                    print("HI");
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const ResetPage()));
                   },
                   child: const Text(
                     "Forgot",
