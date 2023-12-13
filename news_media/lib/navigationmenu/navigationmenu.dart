@@ -1,10 +1,10 @@
+import 'package:NewsToYou/Trending/trendingpage.dart';
 import 'package:NewsToYou/news_feed/news_feed.dart';
 import 'package:NewsToYou/profilepage/profilepage.dart';
 import 'package:NewsToYou/recommended_page/recommended_page.dart';
 import 'package:NewsToYou/search_page/search_page.dart';
 import 'package:flutter/material.dart';
 
-import '../Trending/trendingpage.dart';
 
 class NavigationMenu extends StatefulWidget{
   const NavigationMenu ({super.key});
