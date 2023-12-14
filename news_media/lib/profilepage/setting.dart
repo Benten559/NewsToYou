@@ -149,9 +149,10 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _signOut() async {
     final FirebaseAuth _auth = FirebaseAuth.instance;
     await _auth.signOut();
-    Navigator.pushReplacement(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const LoginPage()),
+          (Route<dynamic> route) => false,
     );
     print('User logged out');
   }
@@ -163,6 +164,7 @@ class CommonBtn extends StatelessWidget {
   final double height;
   final double width;
   final double radius;
+
 
   const CommonBtn({
     required this.text,

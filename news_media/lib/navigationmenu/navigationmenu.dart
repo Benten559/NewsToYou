@@ -24,14 +24,9 @@ class _NavigationMenuState extends State<NavigationMenu> {
             currentPageIndex = index;
           });
         },
-        indicatorColor: Colors.amber[800],
+        indicatorColor: const Color(0xFF56C596),
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(Icons.newspaper),
-            icon: Icon(Icons.newspaper_outlined),
-            label: 'News',
-          ),
           NavigationDestination(
             selectedIcon: Icon(Icons.trending_up),
             icon: Icon(Icons.trending_down_outlined),
@@ -56,11 +51,6 @@ class _NavigationMenuState extends State<NavigationMenu> {
       ),
       body: <Widget>[
         Container(
-          color: Colors.red,
-          alignment: Alignment.center,
-          child: TrendingPage(), ///trending page here!
-        ),
-        Container(
           color: Colors.green,
           alignment: Alignment.center,
           child: const NewsFeedPage(), ///NewsFeedPage here! const Text('Trending Page')
@@ -68,7 +58,7 @@ class _NavigationMenuState extends State<NavigationMenu> {
         Container(
           color: Colors.blue,
           alignment: Alignment.center,
-          child: const RecommendedPage(),//const Text('Recommend Page'), ///recommend page here!
+          child: const RecommendedPage(),///recommend page here!
         ),
         Container(
           color: Colors.blue,

@@ -33,11 +33,12 @@ Widget customListTile(Article article, BuildContext context) {
           ),
           const SizedBox(height: 8.0),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 padding: const EdgeInsets.all(6.0),
                 decoration: BoxDecoration(
-                  color: Colors.red,
+                  color: const Color(0xFF56c596),
                   borderRadius: BorderRadius.circular(30.0),
                 ),
                 child: Text(
@@ -47,7 +48,6 @@ Widget customListTile(Article article, BuildContext context) {
                   ),
                 ),
               ),
-              const SizedBox(height: 8.0),
               SaveButton(article),
             ],
           ),

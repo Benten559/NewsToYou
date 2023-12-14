@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
+import '../customized/app_colors.dart';
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -44,12 +46,20 @@ class _ProfilePage extends State<ProfilePage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        centerTitle: true,
-        backgroundColor: Colors.grey[900],
+        backgroundColor: Colors.transparent,
+        toolbarHeight: 100,
         elevation: 0,
+        title: const Text(
+          "Profile",
+          style: TextStyle(
+            fontSize: 80,
+            color: AppColors.defaulttextcolor,
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
+            color: AppColors.defaulttextcolor,
             onPressed: () {
               Navigator.push(
                 context,
@@ -58,7 +68,6 @@ class _ProfilePage extends State<ProfilePage> {
             },
           ),
         ],
-        title: const Text('Profile'),
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -79,7 +88,7 @@ class _ProfilePage extends State<ProfilePage> {
                 Text(
                   user.email!,
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey[700]),
+                  style: const TextStyle(color: AppColors.defaulttextcolor),
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -170,7 +179,7 @@ class _ProfilePage extends State<ProfilePage> {
                           ),
                         ],
                       ),
-                      Text(userData?['nickname']),
+                      Text(userData?['nickname'], style: const TextStyle(color: AppColors.defaulttextcolor),),
                     ],
                   ),
                 ),
@@ -267,7 +276,7 @@ class _ProfilePage extends State<ProfilePage> {
                           ),
                         ],
                       ),
-                      Text(userData?['categories'].join(', ')),
+                      Text(userData?['categories'].join(', '), style: const TextStyle(color: AppColors.defaulttextcolor),),
                     ],
                   ),
                 ),

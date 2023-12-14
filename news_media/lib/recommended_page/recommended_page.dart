@@ -5,6 +5,8 @@ import 'package:NewsToYou/components/customListTile.dart';
 import 'package:NewsToYou/utility/callbacks/article_tile.dart';
 import 'package:flutter/material.dart';
 
+import '../customized/app_colors.dart';
+
 class RecommendedPage extends StatefulWidget {
   const RecommendedPage({Key? key}) : super(key: key);
 
@@ -28,19 +30,16 @@ class _RecommendedPage extends State<RecommendedPage> {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: 105,
-          centerTitle: true,
+          toolbarHeight: 100,
           elevation: 0,
           backgroundColor: Colors.transparent,
           title: const Column(
             children: [
-              OurLogo(),
-              SizedBox(height: 5),
               Text(
-                'Recommended',
+                "Recommend",
                 style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 15,
+                  fontSize: 80,
+                  color: AppColors.defaulttextcolor,
                 ),
               ),
             ],

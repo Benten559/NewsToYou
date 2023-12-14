@@ -6,6 +6,8 @@ import 'package:NewsToYou/customized/commonbtn.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
+import '../customized/app_colors.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
@@ -106,8 +108,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       if (_currentStep == 2)
                         CommonBtn(
                           text: 'Register',
-                          onPressed: () {
-                            FirebaseAuth.instance
+                          onPressed: () async{
+                            await FirebaseAuth.instance
                                 .createUserWithEmailAndPassword(
                                 email: usernamecontroller.text,
                                 password: passwordcontroller.text)
@@ -158,82 +160,99 @@ class _SignUpPageState extends State<SignUpPage> {
                     content: Column(
                       children: [
                         ///Email
-                        Container(
-                          height: 60,
-                          padding: const EdgeInsets.only(top: 3, left: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(
-                              color: errorstate.isEmpty?(_emailcheck?Colors.green:(_emailistypiing?Colors.red:Colors.white)):Colors.red,
-                              width: 2.0,
+                        TextField(
+                          controller: usernamecontroller,
+                          decoration: InputDecoration(
+                            labelText: errorstate.isEmpty?(_emailcheck?"Email requirements satisfied!":(_emailistypiing?"Invalid Email format":"Email")):errorstate,
+                            floatingLabelStyle: TextStyle(
+                              color: errorstate.isEmpty?(_emailcheck?Colors.green:(_emailistypiing?Colors.red:AppColors.defaulttextcolor)):Colors.red,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 7,
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: errorstate.isEmpty?1.0:2.0,
+                                  color: errorstate.isEmpty?(_emailcheck?Colors.green:(_emailistypiing?Colors.red:AppColors.defaulttextcolor)):Colors.red,
+                                )
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 2.0,
+                                  color: errorstate.isEmpty?(_emailcheck?Colors.green:(_emailistypiing?Colors.red:AppColors.defaulttextcolor)):Colors.red,
                               ),
-                            ],
+                            ),
                           ),
-                          child: TextField(
-                            controller: usernamecontroller,
-                            onChanged: (text) {
+                          onChanged: (text) {
+                            setState(() {
+                              _emailistypiing = true;
+                            });
+                            if (isValidEmail(text)&&errorstate.isEmpty) {
                               setState(() {
-                                _emailistypiing = true;
+                                _emailcheck = true;
                               });
-                              if (isValidEmail(text)&&errorstate.isEmpty) {
-                                setState(() {
-                                  _emailcheck = true;
-                                });
-                              } else if (text.isEmpty) {
-                                setState(() {
-                                  _emailistypiing = false;
-                                });
-                              } else if(isValidEmail(text)&&errorstate.isNotEmpty){
-                                setState(() {
-                                  _emailcheck = true;
-                                  errorstate="";
-                                });
-                              }else{
-                                setState(() {
-                                  _emailcheck = false;
-                                });
-                              }
-                            },
-                            decoration: InputDecoration(
-                              labelText: errorstate.isEmpty?(_emailcheck?"Email requirements satisfied!":(_emailistypiing?"Invalid Email format":"Email")):errorstate,
-                              labelStyle: TextStyle(
-                                color: errorstate.isEmpty?(_emailcheck?Colors.green:(_emailistypiing?Colors.red:null)):Colors.red,
-                              ),
-                              border: InputBorder.none,
-                            ),
-                          ),
+                            } else if (text.isEmpty) {
+                              setState(() {
+                                _emailistypiing = false;
+                              });
+                            } else if(isValidEmail(text)&&errorstate.isNotEmpty){
+                              setState(() {
+                                _emailcheck = true;
+                                errorstate="";
+                              });
+                            }else{
+                              setState(() {
+                                _emailcheck = false;
+                              });
+                            }
+                          },
                         ),
 
                         const SizedBox(height: 10),
 
-                        /// Password
+                        ///Password
                         Container(
-                          height: 60,
-                          padding: const EdgeInsets.only(top: 3, left: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(
-                              color: _passwordistyping
-                                  ? (_passwordcheck ? Colors.green : Colors.red)
-                                  : Colors.white,
-                              width: 2.0,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 7,
-                              ),
-                            ],
-                          ),
+                          height: 55,
                           child: TextField(
+                            obscureText: obscureText,
                             controller: passwordcontroller,
+                            decoration: InputDecoration(
+                              suffix: IconButton(
+                                icon: Icon(obscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    obscureText = !obscureText;
+                                  });
+                                },
+                              ),
+                              labelText: _passwordistyping
+                                  ? (_passwordcheck
+                                  ? "Password requirement satisfied"
+                                  : "Length of Password must be longer than or equal to 6 letters")
+                                  : "Password",
+                              floatingLabelStyle: TextStyle(
+                                color: _passwordistyping
+                                    ? (_passwordcheck
+                                    ? Colors.green
+                                    : Colors.red)
+                                    : AppColors.defaulttextcolor,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    width: errorstate.isEmpty?1.0:2.0,
+                                    color: _passwordistyping
+                                        ? (_passwordcheck ? Colors.green : Colors.red)
+                                        : AppColors.defaulttextcolor,
+                                  )
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 2.0,
+                                  color: _passwordistyping
+                                      ? (_passwordcheck ? Colors.green : Colors.red)
+                                      : AppColors.defaulttextcolor,
+                                ),
+                              ),
+                            ),
                             onChanged: (text) {
                               setState(() {
                                 _passwordistyping = true;
@@ -258,32 +277,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                 });
                               }
                             },
-                            obscureText: obscureText,
-                            decoration: InputDecoration(
-                              suffix: IconButton(
-                                icon: Icon(obscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off),
-                                onPressed: () {
-                                  setState(() {
-                                    obscureText = !obscureText;
-                                  });
-                                },
-                              ),
-                              labelText: _passwordistyping
-                                  ? (_passwordcheck
-                                      ? "Password requirement satisfied"
-                                      : "Length of Password must be longer than or equal to 6 letters")
-                                  : "Password",
-                              labelStyle: TextStyle(
-                                color: _passwordistyping
-                                    ? (_passwordcheck
-                                        ? Colors.green
-                                        : Colors.red)
-                                    : null,
-                              ),
-                              border: InputBorder.none,
-                            ),
                           ),
                         ),
 
@@ -291,30 +284,62 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         /// Confirm Password
                         Container(
-                          height: 60,
-                          padding: const EdgeInsets.only(top: 3, left: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(
-                              color: _cpasswordistyping
-                                  ? (_cpasswordmatch
-                                      ? (cpasswordcontroller.text.length >= 6
-                                          ? Colors.green
-                                          : Colors.red)
-                                      : Colors.red)
-                                  : Colors.white,
-                              width: 2.0,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 7,
-                              ),
-                            ],
-                          ),
+                          height: 55,
                           child: TextField(
+                            obscureText: cobscureText,
                             controller: cpasswordcontroller,
+                            decoration: InputDecoration(
+                              suffix: IconButton(
+                                icon: Icon(cobscureText
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    cobscureText = !cobscureText;
+                                  });
+                                },
+                              ),
+                              labelText: _cpasswordistyping
+                                  ? (_cpasswordmatch
+                                  ? (cpasswordcontroller.text.length >= 6
+                                  ? "Confirm Password requirement satisfied"
+                                  : "Length of Password must be longer than or equal to 6 letters")
+                                  : "Confirm password must be matched to your Password")
+                                  : "Confirm Password",
+                              floatingLabelStyle: TextStyle(
+                                color: _cpasswordistyping
+                                    ? (_cpasswordmatch
+                                    ? (cpasswordcontroller.text.length >= 6
+                                    ? Colors.green
+                                    : Colors.red)
+                                    : Colors.red)
+                                    : AppColors.defaulttextcolor,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    width: errorstate.isEmpty?1.0:2.0,
+                                    color: _cpasswordistyping
+                                        ? (_cpasswordmatch
+                                        ? (cpasswordcontroller.text.length >= 6
+                                        ? Colors.green
+                                        : Colors.red)
+                                        : Colors.red)
+                                        : AppColors.defaulttextcolor,
+                                  )
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 2.0,
+                                  color: _cpasswordistyping
+                                      ? (_cpasswordmatch
+                                      ? (cpasswordcontroller.text.length >= 6
+                                      ? Colors.green
+                                      : Colors.red)
+                                      : Colors.red)
+                                      : AppColors.defaulttextcolor,
+                                ),
+                              ),
+                            ),
                             onChanged: (text) {
                               setState(() {
                                 _cpasswordistyping = true;
@@ -332,36 +357,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                 });
                               }
                             },
-                            obscureText: cobscureText,
-                            decoration: InputDecoration(
-                              suffix: IconButton(
-                                icon: Icon(cobscureText
-                                    ? Icons.visibility
-                                    : Icons.visibility_off),
-                                onPressed: () {
-                                  setState(() {
-                                    cobscureText = !cobscureText;
-                                  });
-                                },
-                              ),
-                              labelText: _cpasswordistyping
-                                  ? (_cpasswordmatch
-                                      ? (cpasswordcontroller.text.length >= 6
-                                          ? "Confirm Password requirement satisfied"
-                                          : "Length of Password must be longer than or equal to 6 letters")
-                                      : "Confirm password must be matched to your Password")
-                                  : "Confirm Password",
-                              labelStyle: TextStyle(
-                                color: _cpasswordistyping
-                                    ? (_cpasswordmatch
-                                        ? (cpasswordcontroller.text.length >= 6
-                                            ? Colors.green
-                                            : Colors.red)
-                                        : Colors.red)
-                                    : null,
-                              ),
-                              border: InputBorder.none,
-                            ),
                           ),
                         ),
                       ],
@@ -375,44 +370,37 @@ class _SignUpPageState extends State<SignUpPage> {
                     title: const Text('Profile info'),
                     content: Column(
                       children: [
-                        ///nickname
-                        Container(
-                          height: 60,
-                          padding: const EdgeInsets.only(top: 3, left: 15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(
-                              color: _nickcheck ? Colors.green : Colors.white,
-                              width: 2.0,
+                        ///Nickname
+                        TextField(
+                          controller: nicknamecontroller,
+                          decoration: InputDecoration(
+                            labelText: "NickName",
+                            floatingLabelStyle: TextStyle(
+                              color: _nickcheck ? Colors.green : AppColors.defaulttextcolor,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 7,
+                            enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: errorstate.isEmpty?1.0:2.0,
+                                  color: _nickcheck ? Colors.green : AppColors.defaulttextcolor,
+                                )
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2.0,
+                                color: _nickcheck ? Colors.green : AppColors.defaulttextcolor,
                               ),
-                            ],
+                            ),
                           ),
-                          child: TextField(
-                            controller: nicknamecontroller,
-                            onChanged: (text) {
+                          onChanged: (text) {
+                            setState(() {
+                              _nickcheck = true;
+                            });
+                            if (text.isEmpty) {
                               setState(() {
-                                _nickcheck = true;
+                                _nickcheck = false;
                               });
-                              if (text.isEmpty) {
-                                setState(() {
-                                  _nickcheck = false;
-                                });
-                              }
-                            },
-                            decoration: InputDecoration(
-                              labelText: "NickName",
-                              labelStyle: TextStyle(
-                                color: _nickcheck ? Colors.green : null,
-                              ),
-                              border: InputBorder.none,
-                            ),
-                          ),
+                            }
+                          },
                         ),
 
                         const SizedBox(height: 10),

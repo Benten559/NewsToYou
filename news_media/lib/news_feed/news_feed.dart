@@ -1,3 +1,4 @@
+import 'package:NewsToYou/customized/app_colors.dart';
 import 'package:NewsToYou/customized/ourlogo.dart';
 import 'package:NewsToYou/model/article_model.dart';
 import 'package:NewsToYou/services/api_service.dart';
@@ -20,22 +21,16 @@ class _NewsFeedPage extends State<NewsFeedPage> {
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          toolbarHeight: 105,
-          centerTitle: true,
+          toolbarHeight: 100,
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: const Column(
             children: [
-              OurLogo(),
-
-              SizedBox(height: 5),
-
-              //page hint
               Text(
-                'News Feed',
+                "Trending",
                 style: TextStyle(
-                  color: Colors.black54,
-                  fontSize: 15,
+                  fontSize: 80,
+                  color: AppColors.defaulttextcolor,
                 ),
               ),
             ],
